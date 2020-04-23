@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title= title
+    //- jQuery
+    script(src='node_modules/jquery/dist/jquery.js')
+    //- Bootstrap
+    link(rel='stylesheet' href='node_modules/bootstrap/.../bootstrap.css')
+    script(src='node_modules/bootstrap/.../bootstrap.bundle.js')
+    //- Fontawesome
+    link(rel='stylesheet', href='node_modules/@fontawesome/fontawesome-free/css/all.css')
+    //- Sweet Alert 2
+    script(src='node_modules/sweetalert2/dist/sweetalert2.all.min.js')
+    link(rel='stylesheet', href='node_modules/sweetalert2/dist/sweetalert2.min.css')
+
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    block stylesheet
+  body
+    include header
+    #content
+      block content
+    include footer
+    block script
