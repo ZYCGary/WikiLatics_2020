@@ -1,4 +1,4 @@
-let User = require('../../models/user.models')
+let User = require('../../models/user.model')
 
 function index(req, res, next) {
     res.render('auth/register')
