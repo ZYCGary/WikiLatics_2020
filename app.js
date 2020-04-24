@@ -28,6 +28,19 @@ app.use('/assets', [
     express.static(path.join(__dirname, '/node_modules/sweetalert2/dist/')),
 ])
 
+
+// session setup
+app.use(session({
+    key: sessionConfig.SESSION_KEY,
+    secret: sessionConfig.SESSION_SECRET,
+    cookie: {expires: parseInt(sessionConfig.SESSION_EXPIRES)},
+    resave: sessionConfig.SESSION_RESAVE === 'true',
+    saveUninitialized: sessionConfig.SESSION_SAVEUNINITIALIZED === 'true'
+}));
+
+// flash setup
+app.use(flash())
+
 app.use('/', indexRouter);
 app.use('/analytics', analyticsRouter);
 
@@ -46,19 +59,5 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
-// session setup
-app.use(session({
-    key: sessionConfig.SESSION_KEY,
-    secret: sessionConfig.SESSION_SECRET,
-    resave: sessionConfig.SESSION_RESAVE,
-    saveUninitialized: sessionConfig.SESSION_SAVEUNINITIALIZED,
-    cookie: {
-        expires: sessionConfig.SESSION_EXPIRES,
-    },
-}));
-
-// flash setup
-app.use(flash())
 
 module.exports = app;
