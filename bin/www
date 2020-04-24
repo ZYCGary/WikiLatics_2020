@@ -7,14 +7,14 @@
 const app = require('../app');
 const debug = require('debug')('wikilatics:server');
 const http = require('http');
-const config = require('../config/app')
+const { PORT } = require('../config/app')
 
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(config.PORT || '3000');
+const port = normalizePort(PORT || '3000');
 app.set('port', port);
 
 /**

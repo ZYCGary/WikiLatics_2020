@@ -1,13 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const registerController = require('../controllers/auth/registerController'),
-    loginController = require('../controllers/auth/loginController'),
-    forgotPasswordController = require('../controllers/auth/forgotPasswordController')
+const { checkCookie } = require('../middlewares/authentication');
+const registerController = require('../controllers/auth/registerController');
+const loginController = require('../controllers/auth/loginController');
+const forgotPasswordController = require('../controllers/auth/forgotPasswordController');
+
+router.use(checkCookie);
 
 /* GET landing page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', function (req, res, next) {
+    res.render('index', {title: 'Express'});
 });
 
 /* Auth routers */

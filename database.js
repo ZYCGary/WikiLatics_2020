@@ -10,12 +10,9 @@ const dbdatabase = DB.DB_DATABASE;
 const dbPath = "mongodb://" + (dbuser ? dbuser + ':' + dbpassword : '') + dbhost + (dbport ? ':' + dbport : '') + (dbdatabase ? '/' + dbdatabase : '');
 mongoose.connect(dbPath, {
     useNewUrlParser: true,
-});
-const db = mongoose.connection;
-db.on("error", () => {
-    console.log("> error occurred from the database");
-});
-db.once("open", () => {
-    console.log("> successfully opened the database");
-});
-module.exports = mongoose;
+    useUnifiedTopology: true
+})
+    .then(r => console.log("> successfully opened the database"))
+    .catch(err => console.log("> error occurred from the database"));
+
+module.exports.mongoose = mongoose;

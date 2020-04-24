@@ -3,6 +3,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const sessionConfig = require('./config/session');
+const session = require('express-session');
+const flash = require('connect-flash')
 
 const indexRouter = require('./app/routes/index.routes');
 const analyticsRouter = require('./app/routes/analytics.routes');
@@ -43,5 +46,19 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+// session setup
+app.use(session({
+    key: sessionConfig.SESSION_KEY,
+    secret: sessionConfig.SESSION_SECRET,
+    resave: sessionConfig.SESSION_RESAVE,
+    saveUninitialized: sessionConfig.SESSION_SAVEUNINITIALIZED,
+    cookie: {
+        expires: sessionConfig.SESSION_EXPIRES,
+    },
+}));
+
+// flash setup
+app.use(flash())
 
 module.exports = app;
