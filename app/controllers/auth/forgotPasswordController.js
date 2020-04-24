@@ -1,4 +1,4 @@
-let User = require('../../models/user.model')
+const User = require('../../models/user.model')
 
 function index(req, res, next) {
     res.render('auth/passwords/email')

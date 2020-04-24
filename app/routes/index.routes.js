@@ -1,7 +1,7 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-let registerController = require('../controllers/auth/registerController'),
+const registerController = require('../controllers/auth/registerController'),
     loginController = require('../controllers/auth/loginController'),
     forgotPasswordController = require('../controllers/auth/forgotPasswordController')
 
