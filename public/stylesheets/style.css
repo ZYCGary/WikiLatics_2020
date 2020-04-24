@@ -1,3 +1,7 @@
 .no_sidebar {
     padding-left: 0!important;
 }
+
+.error {
+    color: red;
+}

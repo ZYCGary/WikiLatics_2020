@@ -14,15 +14,18 @@ html
     //- Bootstrap
     //link(rel='stylesheet' href='assets/css/bootstrap.css')
     //script(src='assets/js/bootstrap.bundle.js')
+    //- jQuery validation
+    script(src="assets/jquery.validate.min.js")
     //- Fontawesome
-    link(rel='stylesheet', href='assets/fontawesome-free/css/all.min.css')
+    link(rel='stylesheet', href='/assets/fontawesome-free/css/all.min.css')
     //- Sweet Alert 2
     script(src='assets/sweetalert2.all.min.js')
-    link(rel='stylesheet', href='assets/sweetalert2.min.css')
+    link(rel='stylesheet', href='/assets/sweetalert2.min.css')
 
     link(rel='stylesheet', href='/stylesheets/main.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     block stylesheets
+    block javascripts-head
   body
     .app-container.app-theme-white.body-tabs-shadow.fixed-sidebar.fixed-header
       include _header
@@ -35,4 +38,5 @@ html
       include _footer
 
     script(src='/javascripts/main.js')
-    block javascripts
+    script(src='/javascripts/app.js')
+    block javascripts-foot

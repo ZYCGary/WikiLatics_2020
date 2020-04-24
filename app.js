@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sessionConfig = require('./config/session');
 const session = require('express-session');
-const flash = require('connect-flash')
+const flash = require('connect-flash');
 
 const indexRouter = require('./app/routes/index.routes');
 const analyticsRouter = require('./app/routes/analytics.routes');
@@ -26,6 +26,7 @@ app.use('/assets', [
     express.static(path.join(__dirname, '/node_modules/bootstrap/dist/')),
     express.static(path.join(__dirname, '/node_modules/@fortawesome/')),
     express.static(path.join(__dirname, '/node_modules/sweetalert2/dist/')),
+    express.static(path.join(__dirname, '/node_modules/jquery-validation/dist/')),
 ])
 
 

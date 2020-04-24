@@ -8,9 +8,9 @@ block content
           .main-card.mb-3.card
             .card-body
               h5.card-title Sign Up
-              form
+              form#register-form(action='/register' method='POST')
                 .position-relative.form-group
-                  label(for='username') Email
+                  label(for='username') Username
                   input#username.form-control(name='username' placeholder='Username' type='text')
                 .position-relative.form-group
                   label(for='email') Email
@@ -20,9 +20,12 @@ block content
                   input#password.form-control(name='password' placeholder='Password' type='password')
                 .position-relative.form-group
                   label(for='password-confirm') Password
-                  input#password-confirm.form-control(name='password-confirm' placeholder='Confirm Password' type='password')
+                  input#password-confirm.form-control(name='password_confirm' placeholder='Confirm Password' type='password')
                 button.mt-1.btn.btn-primary Sign Up
                 small.form-text.text-muted
                   | Already had an account?
                   a(href='/login') Log In
+
+block javascripts-foot
+  script(src="/javascripts/auth.js")
 
