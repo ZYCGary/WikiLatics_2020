@@ -1,4 +1,4 @@
-const UserService = require('../../services/user.service')
+const UserService = require('../../services/user.service');
 
 async function index(req, res, next) {
     res.render('auth/register')

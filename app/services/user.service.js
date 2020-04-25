@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
-const Joi = require('@hapi/joi')
+const Joi = require('@hapi/joi');
+const { HASHING_SALT } = require('../../config/hashing');
 
 module.exports = {
     validate,
@@ -26,16 +27,7 @@ async function create(userData) {
     }
 
     // hash user password
-    /*await bcrypt.genSalt(10, function (err, salt) {
-        if (err)
-            console.log(err)
-        bcrypt.hash(userData.password, salt, function (err, hash) {
-            if (err)
-                console.log(err);
-            userData.password = hash;
-        })
-    })*/
-    userData.password = bcrypt.hashSync(userData.password, 8);
+    userData.password = bcrypt.hashSync(userData.password, HASHING_SALT);
 
     const newUser = new User({
         username: userData.username,
