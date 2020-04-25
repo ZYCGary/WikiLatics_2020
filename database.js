@@ -15,4 +15,4 @@ mongoose.connect(dbPath, {
     .then(r => console.log("> successfully opened the database"))
     .catch(err => console.log("> error occurred from the database"));
 
-module.exports.mongoose = mongoose;
+module.exports = mongoose;

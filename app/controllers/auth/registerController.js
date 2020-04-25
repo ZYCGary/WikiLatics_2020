@@ -1,17 +1,11 @@
 const UserService = require('../../services/user.service')
 
-index = (req, res, next) => {
+async function index(req, res, next) {
     res.render('auth/register')
 }
 
-register = (req, res, next) => {
-    const {username, email, password} = req.body;
-    let userData = {
-        username: username,
-        email: email,
-        password: password
-    }
-
+async function register(req, res, next) {
+    let userData = req.body
     // validate user information
     const {error} = UserService.validate(userData);
     if (error) {
@@ -20,15 +14,16 @@ register = (req, res, next) => {
         })
     }
 
+    // create new user
     UserService.create(userData)
         .then(r => {
-            res.flash('success', 'Welcome' + username);
-            req.session.username = username;
-            req.session.email = data.email;
+            req.flash('success', 'Welcome ' + userData.username);
+            req.session.username = userData.username;
+            req.session.email = userData.email;
             res.redirect('/');
         })
         .catch(err => {
-            req.flash('error', 'Username/Email already existed');
+            req.flash('error', err);
             res.redirect('/register')
         })
 }

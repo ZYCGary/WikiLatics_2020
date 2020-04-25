@@ -19,20 +19,29 @@ async function validate(user) {
 }
 
 
-async function create(newUser) {
+async function create(userData) {
     // validate
-    if (await User.findOne({ username: newUser.email })) {
-        throw 'Email ' + newUser.email + ' is already taken';
+    if (await User.findOne({username: userData.email})) {
+        throw 'Email/Username is already taken';
     }
 
     // hash user password
-    bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(newUser.password, salt, function (err, hash) {
+    /*await bcrypt.genSalt(10, function (err, salt) {
+        if (err)
+            console.log(err)
+        bcrypt.hash(userData.password, salt, function (err, hash) {
             if (err)
                 console.log(err);
-            newUser.password = hash;
+            userData.password = hash;
         })
+    })*/
+    userData.password = bcrypt.hashSync(userData.password, 8);
+
+    const newUser = new User({
+        username: userData.username,
+        email: userData.email,
+        password: userData.password
     })
 
-    await User.save();
+    await newUser.save();
 }
