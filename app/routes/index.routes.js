@@ -2,16 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const { checkCookie } = require('../middlewares/authentication');
-const registerController = require('../controllers/auth/registerController');
-const loginController = require('../controllers/auth/loginController');
-const forgotPasswordController = require('../controllers/auth/forgotPasswordController');
+const pageController = require('../controllers/page_controller')
+const registerController = require('../controllers/auth/register_controller');
+const loginController = require('../controllers/auth/login_controller');
+const forgotPasswordController = require('../controllers/auth/forgot_password_controller');
 
 router.use(checkCookie);
 
 /* GET landing page. */
-router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'});
-});
+router.get('/', pageController.index);
 
 /* Auth routers */
 router.get('/register', registerController.index);

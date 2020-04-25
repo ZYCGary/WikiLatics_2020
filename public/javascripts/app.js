@@ -40,5 +40,30 @@ window.sendAjaxRequest = function (loading = true, loadingContent, type, url, da
                 title: data.error
             })
     })
+}
 
+$(document).ready(function () {
+    handleMessageAlert();
+})
+
+/*
+* Response message alert handler
+*/
+function handleMessageAlert() {
+    let successAlert = $('.success-alert'),
+        errorAlert = $('.error-alert');
+
+    if(successAlert.length) {
+        Toast.fire({
+            icon: 'success',
+            title: successAlert.attr('msg'),
+        })
+    }
+
+    if(errorAlert.length) {
+        Toast.fire({
+            icon: 'error',
+            title: errorAlert.attr('msg'),
+        })
+    }
 }
