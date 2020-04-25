@@ -1,14 +1,7 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const sessionConfig = require('./config/session');
-const session = require('express-session');
-const flash = require('connect-flash');
-
-const indexRouter = require('./app/routes/index.routes');
-const analyticsRouter = require('./app/routes/analytics.routes');
 
 const app = express();
 
@@ -19,7 +12,6 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', [
     express.static(path.join(__dirname, '/node_modules/jquery/dist/')),
@@ -31,6 +23,11 @@ app.use('/assets', [
 
 
 // session setup
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const sessionConfig = require('./config/session');
+
+app.use(cookieParser());
 app.use(session({
     key: sessionConfig.SESSION_KEY,
     secret: sessionConfig.SESSION_SECRET,
@@ -40,7 +37,13 @@ app.use(session({
 }));
 
 // flash setup
+const flash = require('connect-flash');
+
 app.use(flash())
+
+// routers setup
+const indexRouter = require('./app/routes/index.routes');
+const analyticsRouter = require('./app/routes/analytics.routes');
 
 app.use('/', indexRouter);
 app.use('/analytics', analyticsRouter);
