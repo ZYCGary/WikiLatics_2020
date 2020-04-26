@@ -1,4 +1,4 @@
-const User = require('../../models/user_model')
+const User = require('@models/user_model')
 
 function index(req, res, next) {
     res.render('auth/passwords/email')

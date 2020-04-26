@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-const { checkCookie } = require('../app/middlewares/authentication')
-const pageController = require('../app/controllers/page_controller')
-const registerController = require('../app/controllers/auth/register_controller')
-const loginController = require('../app/controllers/auth/login_controller')
-const forgotPasswordController = require('../app/controllers/auth/forgot_password_controller')
-const registerRequest = require('../app/requests/register_request')
+const { checkCookie } = require('@middlewares/authentication')
+const pageController = require('@controllers/page_controller')
+const registerController = require('@controllers/auth/register_controller')
+const loginController = require('@controllers/auth/login_controller')
+const forgotPasswordController = require('@controllers/auth/forgot_password_controller')
+const registerRequest = require('@requests/register_request')
 
 router.use(checkCookie)
 

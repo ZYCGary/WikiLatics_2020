@@ -1,4 +1,4 @@
-const mongoose = require('../../database');
+const mongoose = require('@root/database');
 
 const collectionName = "users";
 const schema = {

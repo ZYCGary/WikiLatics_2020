@@ -1,4 +1,4 @@
-const { SESSION_NAME } = require('../../config/session')
+const { SESSION_NAME } = require('@config/session')
 
 /*
 * This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.

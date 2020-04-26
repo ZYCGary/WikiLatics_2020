@@ -1,4 +1,4 @@
-const { APP_NAME } = require('../../config/app')
+const { APP_NAME } = require('@config/app')
 
 async function index(req, res, next) {
     res.render('index', {

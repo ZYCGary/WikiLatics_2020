@@ -1,7 +1,7 @@
-const User = require('../user_model')
+const User = require('@models/user_model')
 const bcrypt = require('bcryptjs')
 const Joi = require('@hapi/joi')
-const {HASHING_SALT} = require('../../../config/hashing')
+const {HASHING_SALT} = require('@config/hashing')
 
 module.exports = {
     create
