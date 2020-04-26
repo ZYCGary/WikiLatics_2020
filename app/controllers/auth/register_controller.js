@@ -4,7 +4,6 @@ const UserService = require('../../models/services/user_service');
 async function index(req, res, next) {
     res.render('auth/register', {
         title: APP_NAME + ' - Sign Up',
-
     })
 }
 

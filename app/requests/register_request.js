@@ -2,7 +2,7 @@ const {APP_NAME} = require('../../config/app')
 const {Joi, validate} = require('./request')
 
 const rules = {
-    username: Joi.number().min(0).max(3).required(),
+    username: Joi.string().min(0).max(3).required(),
     email: Joi.string().min(5).max(255).required().email(),
     password: Joi.string().min(3).max(255).required()
 }

@@ -4,8 +4,7 @@ const Joi = require('@hapi/joi');
 const {HASHING_SALT} = require('../../../config/hashing');
 
 module.exports = {
-    validate,
-    create,
+    create
 }
 
 async function create(userData) {
