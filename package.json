@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "watch-poll": "node-sass --watch resources/sass -o public/css --output-style compressed"
   },
   "dependencies": {
@@ -47,6 +47,7 @@
   "_moduleAliases": {
     "@root": ".",
     "@config": "config",
+    "@routes": "routes",
     "@models": "app/models",
     "@services": "app/models/services",
     "@controllers": "app/controllers",

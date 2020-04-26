@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { checkCookie, loggedIn } = require('@middlewares/authentication')
 
-router.use(checkCookie);
+const { loggedIn } = require('@middlewares/authentication')
+
 router.use(loggedIn);
 
 /* GET users listing. */

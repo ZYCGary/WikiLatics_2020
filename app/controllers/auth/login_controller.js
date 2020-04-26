@@ -1,5 +1,4 @@
 const { APP_NAME } = require('@config/app')
-const User = require('@models/user_model')
 
 function index(req, res, next) {
     res.render('auth/login', {
