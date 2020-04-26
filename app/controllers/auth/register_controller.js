@@ -3,20 +3,13 @@ const UserService = require('../../models/services/user_service');
 
 async function index(req, res, next) {
     res.render('auth/register', {
-        title: APP_NAME + ' - Sign Up'
+        title: APP_NAME + ' - Sign Up',
+
     })
 }
 
 async function register(req, res, next) {
     let userData = req.body
-    // validate user information
-    const {error} = UserService.validate(userData);
-    if (error) {
-        res.render('auth/register', {
-            title: APP_NAME + ' - Sign Up',
-            error: 'Invalid input'
-        })
-    }
 
     // create new user
     UserService.create(userData)
