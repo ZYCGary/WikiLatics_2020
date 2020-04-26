@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { checkCookie, loggedIn } = require('../middlewares/authentication')
+const { checkCookie, loggedIn } = require('../app/middlewares/authentication')
 
 router.use(checkCookie);
 router.use(loggedIn);

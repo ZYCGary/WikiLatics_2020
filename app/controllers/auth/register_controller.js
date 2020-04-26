@@ -1,5 +1,5 @@
 const { APP_NAME } = require('../../../config/app');
-const UserService = require('../../services/user_service');
+const UserService = require('../../models/services/user_service');
 
 async function index(req, res, next) {
     res.render('auth/register', {

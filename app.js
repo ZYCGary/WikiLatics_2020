@@ -6,7 +6,7 @@ const logger = require('morgan');
 const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'app/views'));
+app.set('views', path.join(__dirname, 'resources/views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
@@ -44,8 +44,8 @@ const flash = require('connect-flash');
 app.use(flash())
 
 // routers setup
-const indexRouter = require('./app/routes/index.routes');
-const analyticsRouter = require('./app/routes/analytics.routes');
+const indexRouter = require('./routes/index.routes');
+const analyticsRouter = require('./routes/analytics.routes');
 
 app.use('/', indexRouter);
 app.use('/analytics', analyticsRouter);
