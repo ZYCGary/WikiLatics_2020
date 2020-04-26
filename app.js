@@ -15,8 +15,6 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', [
     express.static(path.join(__dirname, '/node_modules/jquery/dist/')),
-    express.static(path.join(__dirname, '/node_modules/bootstrap/dist/')),
-    express.static(path.join(__dirname, '/node_modules/@fortawesome/')),
     express.static(path.join(__dirname, '/node_modules/sweetalert2/dist/')),
     express.static(path.join(__dirname, '/node_modules/jquery-validation/dist/')),
 ])

@@ -8,13 +8,13 @@ block content
           .main-card.mb-3.card
             .card-body
               h5.card-title Log In
-              form
+              form(action='/login' method='POST')
                 .position-relative.form-group
                   label(for='username') Username
-                  input#username.form-control(name='username' placeholder='Username' type='text')
+                  input#username.form-control(name='username' placeholder='Username' type='text' value=username)
                 .position-relative.form-group
                   label(for='password') Password
-                  input#password.form-control(name='password' placeholder='Password' type='password')
+                  input#password.form-control(name='password' placeholder='Password' type='password' value=password)
                 button.mt-1.btn.btn-primary Log In
                 small.form-text.text-muted
                   a(href='/login') Forgot password?
