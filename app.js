@@ -36,6 +36,12 @@ app.use(session({
     saveUninitialized: sessionConfig.SESSION_SAVEUNINITIALIZED
 }));
 
+// passport setup
+const passport = require('passport');
+
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
 // flash setup
 const flash = require('connect-flash');
 
