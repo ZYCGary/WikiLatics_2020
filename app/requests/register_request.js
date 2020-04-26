@@ -25,7 +25,7 @@ const rules = {
         .email(),
     password: Joi.string()
         .min(authConfig.password.min)
-        .max(authConfig.password.min)
+        .max(authConfig.password.max)
         .required(),
     password_confirm: Joi.any()
         .valid(Joi.ref('password'))
