@@ -1,5 +1,5 @@
-const { APP_NAME } = require('../../../config/app');
-const UserService = require('../../models/services/user_service');
+const { APP_NAME } = require('../../../config/app')
+const UserService = require('../../models/services/user_service')
 
 async function index(req, res, next) {
     res.render('auth/register', {
@@ -13,18 +13,18 @@ async function register(req, res, next) {
     // create new user
     UserService.create(userData)
         .then(r => {
-            req.flash('success', 'Welcome, ' + userData.username);
-            req.session.username = userData.username;
-            req.session.email = userData.email;
-            res.redirect('/');
+            req.flash('success', 'Welcome, ' + userData.username)
+            req.session.username = userData.username
+            req.session.email = userData.email
+            res.redirect('/')
         })
         .catch(err => {
             res.render('auth/register', {
                 title: APP_NAME + ' - Sign Up',
-                username: userData.username,
-                email: userData.email,
-                password: userData.password,
-                password_confirm: userData.password_confirm,
+                old_username: userData.username,
+                old_email: userData.email,
+                old_password: userData.password,
+                old_password_confirm: userData.password_confirm,
                 error: err
             })
         })

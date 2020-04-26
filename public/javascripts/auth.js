@@ -17,11 +17,13 @@ function submitRegisterForm() {
         rules: {
             username: {
                 required: true,
-                minlength: 5,
+                minlength: 6,
                 maxlength: 20,
             },
             email: {
                 required: true,
+                minlength: 5,
+                maxlength: 255,
                 email: true
             },
             password: {

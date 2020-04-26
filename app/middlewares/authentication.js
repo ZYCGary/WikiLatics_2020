@@ -1,4 +1,4 @@
-const { SESSION_NAME } = require('../../config/session');
+const { SESSION_NAME } = require('../../config/session')
 
 /*
 * This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
@@ -6,9 +6,9 @@ const { SESSION_NAME } = require('../../config/session');
 */
 module.exports.checkCookie = function (req, res, next) {
     if (req.cookies[SESSION_NAME] && !req.session.username) {
-        res.clearCookie(SESSION_NAME);
+        res.clearCookie(SESSION_NAME)
     }
-    next();
+    next()
 }
 
 /*
@@ -16,7 +16,7 @@ module.exports.checkCookie = function (req, res, next) {
 */
 module.exports.loggedIn = function (req, res, next) {
     if (req.cookies[SESSION_NAME] && req.session.username) {
-        next();
+        next()
     } else {
         req.flash('warning', 'Please login first')
         res.redirect('/login')

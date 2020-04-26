@@ -29,11 +29,11 @@ window.sendAjaxRequest = function (loading = true, loadingContent, type, url, da
         url: url,
         data: data,
     }).done(function (data) {
-        Swal.close();
+        Swal.close()
         doneFn(data)
     }).fail(function (data) {
-        Swal.close();
-        errorFn(data);
+        Swal.close()
+        errorFn(data)
         if (errorAlert)
             Toast.fire({
                 icon: 'error',
@@ -43,7 +43,7 @@ window.sendAjaxRequest = function (loading = true, loadingContent, type, url, da
 }
 
 $(document).ready(function () {
-    handleMessageAlert();
+    handleMessageAlert()
 })
 
 /*
@@ -52,11 +52,11 @@ $(document).ready(function () {
 function handleMessageAlert() {
     let successAlert = $('.success-alert'),
         errorAlert = $('.error-alert'),
-        warningAlert = $('.warning-alert');
+        warningAlert = $('.warning-alert')
 
-    toastMessage('success', successAlert);
-    toastMessage('error', errorAlert);
-    toastMessage('warning', warningAlert);
+    toastMessage('success', successAlert)
+    toastMessage('error', errorAlert)
+    toastMessage('warning', warningAlert)
 }
 
 /*

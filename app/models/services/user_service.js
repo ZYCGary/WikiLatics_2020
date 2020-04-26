@@ -1,20 +1,20 @@
-const User = require('../user_model');
-const bcrypt = require('bcryptjs');
-const Joi = require('@hapi/joi');
-const {HASHING_SALT} = require('../../../config/hashing');
+const User = require('../user_model')
+const bcrypt = require('bcryptjs')
+const Joi = require('@hapi/joi')
+const {HASHING_SALT} = require('../../../config/hashing')
 
 module.exports = {
     create
 }
 
 async function create(userData) {
-    // validate
+    // validate existence
     if (await User.findOne({ $or: [{ username: userData.username }, { email: userData.email }] })) {
-        throw 'Username/Email is already taken';
+        throw 'Username/Email is already taken'
     }
 
     // hash user password
-    userData.password = bcrypt.hashSync(userData.password, HASHING_SALT);
+    userData.password = bcrypt.hashSync(userData.password, HASHING_SALT)
 
     const newUser = new User({
         username: userData.username,
@@ -22,5 +22,5 @@ async function create(userData) {
         password: userData.password
     })
 
-    await newUser.save();
+    await newUser.save()
 }

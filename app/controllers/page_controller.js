@@ -7,7 +7,7 @@ async function index(req, res, next) {
         email: req.session.email,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
-    });
+    })
 }
 
 module.exports = {
