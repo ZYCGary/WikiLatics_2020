@@ -51,19 +51,21 @@ $(document).ready(function () {
 */
 function handleMessageAlert() {
     let successAlert = $('.success-alert'),
-        errorAlert = $('.error-alert');
+        errorAlert = $('.error-alert'),
+        warningAlert = $('.warning-alert');
 
-    if(successAlert.length) {
-        Toast.fire({
-            icon: 'success',
-            title: successAlert.attr('msg'),
-        })
-    }
+    toastMessage('success', successAlert);
+    toastMessage('error', errorAlert);
+    toastMessage('warning', warningAlert);
+}
 
-    if(errorAlert.length) {
+/*
+* Toast response message
+*/
+function toastMessage(type, messageNode) {
+    if (messageNode.length)
         Toast.fire({
-            icon: 'error',
-            title: errorAlert.attr('msg'),
+            icon: type,
+            title: messageNode.attr('msg')
         })
-    }
 }
