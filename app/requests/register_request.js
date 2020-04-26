@@ -1,19 +1,34 @@
 const {APP_NAME} = require('../../config/app')
 const {Joi, validate} = require('./request')
 
+const messages = {
+    username: {
+        "string.base": `Username should be a type of text`,
+        "string.empty": `Username cannot be an empty field`,
+        "string.min": `Username should have a minimum length of {#limit}`,
+        "string.max": `Username should have a maximum length of {#limit}`,
+        "any.required": `Username is a required field`
+    }
+}
+
 const rules = {
-    username: Joi.string().min(0).max(3).required(),
+    username: Joi.string().min(0).max(3).required().messages(messages.username),
     email: Joi.string().min(5).max(255).required().email(),
     password: Joi.string().min(3).max(255).required()
 }
+
 const errorHandler = function (error, req, res, next) {
     res.render('auth/register', {
         title: APP_NAME + ' - Sign Up',
+        old_username: req.body.username,
+        old_email: req.body.email,
+        old_password: req.body.password,
+        old_password_confirm: req.body.password_confirm,
         error: error
     })
 }
 
 
 module.exports = function (req, res, next) {
-    validate(res, req, next, rules, errorHandler)
+    validate(req, res, next, rules, errorHandler)
 }
