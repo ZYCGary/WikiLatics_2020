@@ -29,11 +29,13 @@ const sessionConfig = require('./config/session');
 
 app.use(cookieParser());
 app.use(session({
-    key: sessionConfig.SESSION_KEY,
+    name: sessionConfig.SESSION_NAME,
     secret: sessionConfig.SESSION_SECRET,
-    cookie: {expires: parseInt(sessionConfig.SESSION_EXPIRES)},
-    resave: sessionConfig.SESSION_RESAVE === 'true',
-    saveUninitialized: sessionConfig.SESSION_SAVEUNINITIALIZED === 'true'
+    cookie: {
+        maxAge: sessionConfig.SESSION_MAXAGE
+    },
+    resave: sessionConfig.SESSION_RESAVE,
+    saveUninitialized: sessionConfig.SESSION_SAVEUNINITIALIZED
 }));
 
 // flash setup
