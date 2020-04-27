@@ -1,4 +1,5 @@
 const { APP_NAME } = require('@config/app')
+const passport = require('passport')
 
 const index = (req, res, next) => {
     res.render('auth/login', {
@@ -10,7 +11,12 @@ const index = (req, res, next) => {
 }
 
 const login = (req, res, next) => {
-
+    return passport.authenticate('local-login', {
+        successRedirect : '/',
+        failureRedirect : '/login',
+        failureFlash : true ,
+        successFlash: true
+    })(req, res, next)
 }
 
 const logout = async (req, res, next) => {

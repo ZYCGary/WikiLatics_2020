@@ -36,17 +36,13 @@ const create = (userData) => {
 }
 
 /**
- * Find a user by given data
+ * validate input password with user's password
  */
-const findOneUser = () => {
-    return new Promise((resolve, reject) => {
-        User.findOne(arguments)
-            .then(user => resolve(user))
-            .catch(err => reject(err))
-    })
+const validatePassword = (password, userPassword) => {
+    return bcrypt.compareSync(password, userPassword)
 }
 
 module.exports = {
     create,
-    findOneUser
+    validatePassword
 }

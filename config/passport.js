@@ -40,4 +40,28 @@ module.exports = function (passport) {
                     return done(err)
                 })
         }));
+
+    /**
+     * Local login
+     */
+    passport.use('local-login', new LocalStrategy({
+            usernameField: 'username',
+            passwordField: 'password',
+            passReqToCallback: true
+        },
+        function (req, username, password, done) {
+            User.findOne({'local.username': username})
+                .select('+local.password')
+                .exec()
+                .then(user => {
+                    if (!user)
+                        return done(null, false, req.flash('error', 'Could not find user named ' + username))
+                    if (!UserService.validatePassword(password, user.local.password))
+                        return done(null, false, req.flash('error', 'Unmatched username and password'))
+                    return done(null, user, req.flash('success', 'Welcome, ' + user.local.username));
+                })
+                .catch(err => {
+                    return done(err);
+                });
+        }))
 }
