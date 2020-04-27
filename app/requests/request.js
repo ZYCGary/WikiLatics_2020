@@ -4,7 +4,7 @@ const validate = async (req, res, next, rules, errorHandler) => {
     const schema = Joi.object(rules)
     const result = schema.validate(req.body)
     const {error} = result
-    if (result.error) {
+    if (error) {
         req.flash('error', error)
         await errorHandler(error.message, req, res, next)
     }

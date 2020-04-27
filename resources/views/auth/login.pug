@@ -8,16 +8,19 @@ block content
           .main-card.mb-3.card
             .card-body
               h5.card-title Log In
-              form(action='/login' method='POST')
+              form#login-form(action='/login' method='POST')
                 .position-relative.form-group
                   label(for='username') Username
-                  input#username.form-control(name='username' placeholder='Username' type='text' value=username)
+                  input#username.form-control(name='username' placeholder='Username' type='text' value=old_username)
                 .position-relative.form-group
                   label(for='password') Password
-                  input#password.form-control(name='password' placeholder='Password' type='password' value=password)
+                  input#password.form-control(name='password' placeholder='Password' type='password' value=old_password)
                 button.mt-1.btn.btn-primary Log In
                 small.form-text.text-muted
                   a(href='/login') Forgot password?
                 small.form-text.text-muted
                   | Don't have an account?
                   a(href='/register') Sign Up
+
+block javascripts-foot
+  script(src="/javascripts/auth.js")
