@@ -32,14 +32,14 @@ const rules = {
         .required()
 }
 
-const errorHandler = function (error, req, res, next) {
+const errorHandler = async function (error, req, res, next) {
     res.render('auth/register', {
         title: APP_NAME + ' - Sign Up',
         old_username: req.body.username,
         old_email: req.body.email,
         old_password: req.body.password,
         old_password_confirm: req.body.password_confirm,
-        error: error
+        error: req.flash('error').toString()
     })
 }
 

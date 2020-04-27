@@ -5,9 +5,12 @@ const validate = async (req, res, next, rules, errorHandler) => {
     const result = schema.validate(req.body)
     const {error} = result
     if (result.error) {
-        errorHandler(error.message, req, res, next)
+        req.flash('error', error)
+        await errorHandler(error.message, req, res, next)
     }
-    next()
+    else{
+        next()
+    }
 }
 
 module.exports = {
