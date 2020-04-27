@@ -33,7 +33,7 @@ module.exports = function (passport) {
             UserService.create(userData)
                 .then(newUser => {
                     if (!newUser)
-                        return done(null, false, req.flash('error', 'Username/Email is already been taken'))
+                        return done(null, false, {'message': 'Username/Email is already been taken'})
                     return done(null, newUser);
                 })
                 .catch(err => {
