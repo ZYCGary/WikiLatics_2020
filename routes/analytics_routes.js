@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { loggedIn } = require('@middlewares/authentication')
+const { authenticated } = require('@middlewares/authentication')
 
-router.use(loggedIn);
+router.use(authenticated);
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

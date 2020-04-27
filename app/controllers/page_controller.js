@@ -1,10 +1,6 @@
 const { APP_NAME } = require('@config/app')
 
-module.exports = {
-    index
-}
-
-async function index(req, res, next) {
+const index = (req, res, next) => {
     res.render('index', {
         title: APP_NAME + ' - Home',
         username: req.session.username,
@@ -12,4 +8,8 @@ async function index(req, res, next) {
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
     })
+}
+
+module.exports = {
+    index
 }

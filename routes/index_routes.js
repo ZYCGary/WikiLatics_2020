@@ -15,6 +15,7 @@ router.get('/register', registerController.index)
 router.post('/register', registerRequest, registerController.register)
 router.get('/login', loginController.index)
 router.post('/login', loginController.login)
+router.get('/logout', loginController.logout)
 router.get('/forgot-password', forgotPasswordController.index)
 router.post('/forgot-password', forgotPasswordController.sendsPasswordResetEmails)
 

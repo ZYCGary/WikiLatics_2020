@@ -1,13 +1,11 @@
 const User = require('@models/user_model')
 const bcrypt = require('bcryptjs')
-const Joi = require('@hapi/joi')
 const {HASHING_SALT} = require('@config/hashing')
 
-module.exports = {
-    create
-}
-
-async function create(userData) {
+/**
+ * Create a new user
+ */
+const create = async (userData) => {
     // validate existence
     if (await User.findOne({ $or: [{ username: userData.username }, { email: userData.email }] })) {
         throw 'Username/Email is already taken'
@@ -23,4 +21,8 @@ async function create(userData) {
     })
 
     await newUser.save()
+}
+
+module.exports = {
+    create
 }

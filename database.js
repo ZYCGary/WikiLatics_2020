@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const DB = require('./config/database')
+const DB = require('@config/database')
 
 const dbhost = DB.DB_HOST
 const dbport = DB.DB_PORT

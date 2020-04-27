@@ -1,13 +1,13 @@
 const { APP_NAME } = require('@config/app')
 const UserService = require('@models/services/user_service')
 
-async function index(req, res, next) {
+const index = (req, res, next) => {
     res.render('auth/register', {
         title: APP_NAME + ' - Sign Up',
     })
 }
 
-async function register(req, res, next) {
+const register = (req, res, next) => {
     let userData = req.body
 
     // create new user
