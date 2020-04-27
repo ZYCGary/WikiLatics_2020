@@ -10,21 +10,24 @@ const create = (userData) => {
         // validate existence
         User.findOne({$or: [{'local.username': userData.username}, {'local.email': userData.email}]})
             .then(user => {
+                // user has registered
                 if (user)
                     resolve(false)
+                // no duplicate user found, put this new user into the database
+                else {
+                    // hash user password
+                    userData.password = bcrypt.hashSync(userData.password, HASHING_SALT)
 
-                // hash user password
-                userData.password = bcrypt.hashSync(userData.password, HASHING_SALT)
+                    const newUser = new User({
+                        'local.username': userData.username,
+                        'local.email': userData.email,
+                        'local.password': userData.password,
+                    })
 
-                const newUser = new User({
-                    'local.username': userData.username,
-                    'local.email': userData.email,
-                    'local.password': userData.password,
-                })
-
-                newUser.save().then(newUser => {
-                    resolve(newUser)
-                })
+                    newUser.save().then(newUser => {
+                        resolve(newUser)
+                    })
+                }
             })
             .catch(err => {
                 reject(err)
