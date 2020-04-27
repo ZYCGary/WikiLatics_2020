@@ -5,17 +5,19 @@ const {SESSION_NAME} = require('@config/session')
 * This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
 */
 const checkCookie = async (req, res, next) => {
-    if (req.cookies[SESSION_NAME] && !req.session.username) {
+    console.log(req.cookies[SESSION_NAME], !req.isAuthenticated())
+    if (req.cookies[SESSION_NAME] && !req.isAuthenticated()) {
         res.clearCookie(SESSION_NAME)
     }
     next()
 }
 
 /*
-* Middleware function to check for logged-in users
+* Middleware function to check for logged-in users.
+* This middleware is fired when pages are accessible by an logged-in user
 */
 const authenticated = async (req, res, next) => {
-    if (req.cookies[SESSION_NAME] && req.session.username) {
+    if (req.isAuthenticated()) {
         next()
     } else {
         req.flash('warning', 'Please login first')
@@ -23,7 +25,20 @@ const authenticated = async (req, res, next) => {
     }
 }
 
+/**
+ * Middleware to check if a user has logged out.
+ * This middleware is fired when an authenticated user try to call authentication functions (register, login)
+ */
+const loggedOut = async (req, res, next) =>{
+    if (req.isAuthenticated()) {
+        res.redirect('back')
+    } else {
+        next()
+    }
+}
+
 module.exports = {
     checkCookie,
-    authenticated
+    authenticated,
+    loggedOut
 }
