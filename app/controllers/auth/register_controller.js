@@ -1,33 +1,19 @@
-const { APP_NAME } = require('@config/app')
-const UserService = require('@models/services/user_service')
+const {APP_NAME} = require('@config/app')
+const passport = require('passport')
 
 const index = (req, res, next) => {
     res.render('auth/register', {
         title: APP_NAME + ' - Sign Up',
+        error: req.flash('error').toString()
     })
 }
 
 const register = (req, res, next) => {
-    let userData = req.body
-
-    // create new user
-    UserService.create(userData)
-        .then(r => {
-            req.flash('success', 'Welcome, ' + userData.username)
-            req.session.username = userData.username
-            req.session.email = userData.email
-            res.redirect('/')
-        })
-        .catch(err => {
-            res.render('auth/register', {
-                title: APP_NAME + ' - Sign Up',
-                old_username: userData.username,
-                old_email: userData.email,
-                old_password: userData.password,
-                old_password_confirm: userData.password_confirm,
-                error: err
-            })
-        })
+    return passport.authenticate('local-register', {
+        successRedirect: '/',
+        failureRedirect: '/register',
+        failureFlash: true
+    })(req, res, next)
 }
 
 

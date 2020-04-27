@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport')
 
 const pageController = require('@controllers/page_controller')
 const registerController = require('@controllers/auth/register_controller')
