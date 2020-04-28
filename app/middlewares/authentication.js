@@ -5,7 +5,6 @@ const {SESSION_NAME} = require('@config/session')
 * This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
 */
 const checkCookie = async (req, res, next) => {
-    console.log(req.cookies[SESSION_NAME], !req.isAuthenticated())
     if (req.cookies[SESSION_NAME] && !req.isAuthenticated()) {
         res.clearCookie(SESSION_NAME)
     }

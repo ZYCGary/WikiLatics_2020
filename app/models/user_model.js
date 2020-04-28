@@ -1,4 +1,4 @@
-const mongoose = require('@root/database');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs')
 const {HASHING_SALT} = require('@config/hashing')
 

@@ -1,1 +1,1 @@
-const mongoose = require('@root/database')
+const mongoose = require('mongoose')
