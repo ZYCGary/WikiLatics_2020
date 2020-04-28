@@ -11,6 +11,9 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
 
+// database setup
+require('./database')
+
 // session setup, MUST after 'cookieParse'
 require('./session')
 
