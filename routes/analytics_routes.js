@@ -5,7 +5,6 @@ const { authenticated } = require('@middlewares/authentication')
 
 router.use(authenticated);
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('Analytics page');
 });
