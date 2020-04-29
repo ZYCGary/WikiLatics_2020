@@ -19,8 +19,15 @@ const authenticated = async (req, res, next) => {
     if (req.isAuthenticated()) {
         next()
     } else {
-        req.flash('warning', 'Please login first')
-        res.redirect('/login')
+        if (req.xhr)
+            req.flash('warning', 'Please login first')
+        res.status(401)
+        if (req.xhr) {
+            res.json({message: 'Please login first'})
+        } else {
+            res.redirect('/login')
+        }
+
     }
 }
 
@@ -28,7 +35,7 @@ const authenticated = async (req, res, next) => {
  * Middleware to check if a user has logged out.
  * This middleware is fired when an authenticated user try to call authentication functions (register, login)
  */
-const loggedOut = async (req, res, next) =>{
+const loggedOut = async (req, res, next) => {
     if (req.isAuthenticated()) {
         res.redirect('back')
     } else {

@@ -29,16 +29,26 @@ window.sendAjaxRequest = function (loading = true, loadingContent, type, url, da
         url: url,
         data: data,
     }).done(function (data) {
-        Swal.close()
         doneFn(data)
-    }).fail(function (data) {
+    }).fail(function (error) {
+        const status = error.status,
+            message = error.responseJSON.message
+
         Swal.close()
-        errorFn(data)
-        if (errorAlert)
-            Toast.fire({
-                icon: 'error',
-                title: data.error
-            })
+        switch(status){
+            // user is not logged in
+            case 401:
+                window.location.assign('/login')
+                break
+            default:
+                if (errorAlert)
+                    Toast.fire({
+                        icon: 'error',
+                        title: message
+                    })
+                break
+        }
+        errorFn(error)
     })
 }
 

@@ -6,7 +6,7 @@ const schema = {
         type: String,
         unique: true,
         required: true
-    }
+    },
 }
 
 const BotSchema = new mongoose.Schema(schema)

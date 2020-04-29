@@ -6,7 +6,7 @@ const schema = {
         type: String,
         unique: true,
         required: true
-    }
+    },
 }
 
 const AdminSchema = new mongoose.Schema(schema)

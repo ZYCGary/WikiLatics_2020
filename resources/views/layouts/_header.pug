@@ -1,16 +1,6 @@
 .app-header.header-shadow
-  .app-header__logo
+  a.app-header__logo(href="/")
     .logo-src
-    //.header__pane.ml-auto
-    //  div
-    //    button.hamburger.close-sidebar-btn.hamburger--elastic(type='button' data-class='closed-sidebar')
-    //      span.hamburger-box
-    //        span.hamburger-inner
-  .app-header__mobile-menu
-    //div
-    //  button.hamburger.hamburger--elastic.mobile-toggle-nav(type='button')
-    //    span.hamburger-box
-    //      span.hamburger-inner
   .app-header__menu
     span
       button.btn-icon.btn-icon-only.btn.btn-primary.btn-sm.mobile-toggle-header-nav(type='button')
@@ -18,25 +8,6 @@
           i.fa.fa-ellipsis-v.fa-w-6
   .app-header__content
     .app-header-left
-      //.search-wrapper
-      //  .input-holder
-      //    input.search-input(type='text' placeholder='Type to search')
-      //    button.search-icon
-      //      span
-      //  button.close
-      //ul.header-menu.nav
-      //  li.nav-item
-      //    a.nav-link(href='javascript:void(0);')
-      //      i.nav-link-icon.fa.fa-database
-      //      |                                 Statistics
-      //  li.btn-group.nav-item
-      //    a.nav-link(href='javascript:void(0);')
-      //      i.nav-link-icon.fa.fa-edit
-      //      |                                 Projects
-      //  li.dropdown.nav-item
-      //    a.nav-link(href='javascript:void(0);')
-      //      i.nav-link-icon.fa.fa-cog
-      //      |                                 Settings
     .app-header-right
       if username
         .header-btn-lg.pr-0
