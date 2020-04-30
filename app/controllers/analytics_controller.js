@@ -18,8 +18,13 @@ const index = async (req, res, next) => {
 */
 const importData = async (req, res, next) => {
     try {
-        EditorService.importEditors('bots').then(console.log('bots imported'))
-        EditorService.importEditors('admin').then(console.log('admin imported'))
+        Promise.all([
+            EditorService.importEditors('bots'),
+            EditorService.importEditors('admin'),
+            EditorService.importRevisions()
+        ]).then(()=> {
+            res.status(200).json({message: 'All data imported! You are ready to analytic data ~^-^~'})
+        })
     } catch (err) {
         res.status(500).json({message: 'Failed to import data because of internal errors'})
     }

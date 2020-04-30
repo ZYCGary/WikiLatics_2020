@@ -29,6 +29,7 @@ window.sendAjaxRequest = function (loading = true, loadingContent, type, url, da
         url: url,
         data: data,
     }).done(function (data) {
+        Swal.close()
         doneFn(data)
     }).fail(function (error) {
         const status = error.status,

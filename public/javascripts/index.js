@@ -12,10 +12,10 @@ const importData = () => {
             url = '/analytics/import-data',
             data = {},
             doneFn = (result) => {
-                if (result.status === '202') {
-                    console.log(result)
-                }
-                console.log(result)
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Data imported. You are ready to analytic data'
+                })
             },
             errorFn = (error) => {}
 

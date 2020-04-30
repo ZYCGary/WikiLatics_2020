@@ -6,19 +6,8 @@ const schema = {
         type: String,
         required: true
     },
-    revid: {
-        type: Number,
-        required: true,
-        unique: true,
-    },
-    parentid: Number,
-    minor: Boolean,
     user: String,
-    userid: Number,
     timestamp: Date,
-    size: Number,
-    sha1: String,
-    parsedcomment: String,
     anon: Boolean
 }
 

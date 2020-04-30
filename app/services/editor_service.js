@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const Bot = require('@models/bot_model')
 const Admin = require('@models/admin_model')
+const Revision = require('@models/revision_model')
 
 const importEditors = async (type) => {
     switch (type) {
@@ -18,6 +19,7 @@ const importEditors = async (type) => {
             // clear 'bots' collection, then import new bot names
             await Bot.deleteMany({})
             await Bot.insertMany(bots)
+            console.log('bots imported')
             break
         case 'admin':
             const adminFile = fs.readFileSync(path.join(process.cwd(), '/public/data/administrators.txt'), 'utf8')
@@ -32,12 +34,27 @@ const importEditors = async (type) => {
             // clear 'admins' collection, then import new bot names
             await Admin.deleteMany({})
             await Admin.insertMany(admins)
+            console.log('admins imported')
             break
         default:
             throw 'Invalid editor type'
     }
 }
 
+const importRevisions = async () => {
+    Revision.deleteMany({})
+    const revisionsPath = path.join(process.cwd(), 'public/data/revisions/')
+    const revisionFiles = fs.readdirSync(revisionsPath)
+    const totalProcess = revisionFiles.length
+    let currentProcess = 0
+    for (const filename of revisionFiles) {
+        await Revision.insertMany(require(revisionsPath + filename))
+        currentProcess++
+        console.log(`Revision Imported(${currentProcess}/${totalProcess}): ${filename}`)
+    }
+}
+
 module.exports = {
-    importEditors
+    importEditors,
+    importRevisions
 }
