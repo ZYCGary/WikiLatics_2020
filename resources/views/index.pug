@@ -1,9 +1,18 @@
 extends layouts/layout
 
 block content
-  h1= title
-  p Welcome, #{username}
-  button#import-data Import
+  #app-home.container
+    .row
+      .col-md-12.text-center
+        h1.mb-3 WikiLatics
+        p.lead.mb-4
+          | gadhg;dsajg;bdfjklfbdarnbvkdfbjksbrubsvfb
+          | dkfbkdblasbdgabv
+        .row.mx-n2
+          .col-md.px-2.mb-3
+            button#import-data.btn-transition.btn.btn-outline-primary.btn-block Import Data
+          .col-md.px-2.mb-3
+            button#get-started.btn-transition.btn.btn-outline-success.btn-block Get Started
 
 block javascripts-foot
   script(src="/javascripts/index.js")

@@ -1,14 +1,28 @@
 //@import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
 
-.no_sidebar {
-  padding-left: 0!important;
+/* universal */
+body {
+  .no_sidebar {
+    padding-left: 0 !important;
+  }
+
+  .error {
+    color: red;
+  }
 }
 
-.error {
-  color: red;
+/* header */
+#app-header {
+  #logout {
+    text-decoration: none;
+  }
 }
 
-#logout {
-  text-decoration: none;
+/* home page */
+#app-home{
+  #import-data, #get-started {
+    font-size: 2em;
+  }
 }
+
