@@ -10,9 +10,10 @@ const dbdatabase = DB.DB_DATABASE
 const dbPath = "mongodb://" + (dbuser ? dbuser + ':' + dbpassword : '') + dbhost + (dbport ? ':' + dbport : '') + (dbdatabase ? '/' + dbdatabase : '')
 mongoose.connect(dbPath, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
 })
-    .then(r => console.log("> successfully opened the database"))
-    .catch(err => console.log("> error occurred from the database"))
+    .then(() => console.log("> successfully opened the database"))
+    .catch(() => console.log("> error occurred from the database"))
 
 module.exports = mongoose
