@@ -8,7 +8,10 @@ const schema = {
     },
     user: String,
     timestamp: Date,
-    anon: Boolean
+    anon: {
+        type: Boolean,
+        default: false
+    }
 }
 
 const RevisionSchema = new mongoose.Schema(schema)

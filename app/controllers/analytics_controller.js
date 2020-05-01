@@ -1,3 +1,4 @@
+const async = require('async')
 const EditorService = require('@services/editor_service')
 
 const index = async (req, res, next) => {
@@ -23,8 +24,7 @@ const importData = async (req, res, next) => {
             EditorService.importEditors('admin'),
             EditorService.importRevisions()
         ])
-        res.status(200).json({message: 'All data imported! You are ready to analytic data ~^-^~'})
-
+            .then(() => res.status(200).json({message: 'All data imported! You are ready to analytic data ~^-^~'}))
     } catch (err) {
         res.status(500).json({message: 'Failed to import data because of internal errors'})
     }

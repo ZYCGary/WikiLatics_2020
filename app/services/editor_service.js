@@ -5,6 +5,9 @@ const Bot = require('@models/bot_model')
 const Admin = require('@models/admin_model')
 const Revision = require('@models/revision_model')
 
+/*
+* Import bot authors and administrator author stored in .txt files into database.bots or database.admins
+*/
 const importEditors = async (type) => {
     try {
         switch (type) {
@@ -54,6 +57,9 @@ const importEditors = async (type) => {
     }
 }
 
+/*
+* Import revision JSON files from local public directory into database.revisions
+*/
 const importRevisions = async () => {
     try {
         await Revision.deleteMany({})
@@ -62,48 +68,14 @@ const importRevisions = async () => {
         const totalProcess = revisionFiles.length
         let currentProcess = 0
 
-        // import revisions in parallel
-        async.mapLimit(revisionFiles, 10, (filename, next) => {
+        for (const filename of revisionFiles) {
             console.log(`Importing ${filename} ...`)
-            Revision.insertMany(require(revisionsPath + filename))
-                .then(() => {
-                    console.log(`Revision Imported(${++currentProcess}/${totalProcess}): ${filename}`)
-                    next()
-                })
-                .catch(err => {
-                    return err
-                })
-        }).then(() => {
-            console.log('All revisions import finished')
-        }).catch(err => {
-            throw err
-        })
-
-        /*, (err) => {
-        if (err)
-            throw err
-        console.log('All revisions import finished')
-    }*/
-        /*const tasks = revisionFiles.map(async function(filename) {
-            console.log(`Importing ${filename} ...`)
-            Revision.insertMany(require(revisionsPath + filename))
-                .then(() => console.log(`Revision Imported(${++currentProcess}/${totalProcess}): ${filename}`))
-                .catch(err => {
-                    return err
-                })
-        })
-        await Promise.all(tasks)*/
-
-        /*for (const filename of revisionFiles) {
-            await Revision.insertMany(require(revisionsPath + filename))
-            currentProcess++
-            console.log(`Revision Imported(${currentProcess}/${totalProcess}): ${filename}`)
-        }*/
+            await Revision.insertMany(require(revisionsPath + filename), {ordered: false})
+            console.log(`Revision Imported(${++currentProcess}/${totalProcess}): ${filename}`)
+        }
     } catch (err) {
         throw err
     }
-
-
 }
 
 module.exports = {
