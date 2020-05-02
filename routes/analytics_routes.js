@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { authenticated } = require('@middlewares/authentication')
+const { authenticated } = require('../app/middlewares/authentication')
 
 router.use(authenticated);
 
