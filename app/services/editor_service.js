@@ -27,7 +27,7 @@ const importEditors = async (type) => {
                 Bot.insertMany(bots)
                     .then(() => console.log('bots imported'))
                     .catch(err => {
-                        return err
+                        throw err
                     })
                 break
             case 'admin':
@@ -46,7 +46,7 @@ const importEditors = async (type) => {
                 Admin.insertMany(admins)
                     .then(() => console.log('admins imported'))
                     .catch(err => {
-                        return err
+                        throw err
                     })
                 break
             default:

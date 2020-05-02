@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    initAnalytics()
 })
 
 /*
@@ -15,12 +15,30 @@ function initAnalytics() {
         allowOutsideClick: false
     })
 
-    let [authorNames] = Promise.all([getAuthorNames()])
+    let tasks = {}
+    tasks.authorNames = getAuthorNames(done)
+
+    try {
+        let {authorNames} = async.parallel(tasks)
+        console.log(authorNames)
+    }catch (err) {
+        console.err(err)
+    }
 }
 
 /*
 * Get all distinct author names
 */
-async function getAuthorNames() {
+async function getAuthorNames(done) {
+    let type = 'POST',
+        url = '/analytics/get-authors',
+        data = {},
+        doneFn = (result) => {
+            done(null, result.names)
+        },
+        errorFn = (err) => {
+            done(err, null)
+        }
 
+    sendAjaxRequest(false, {}, type, url, data, doneFn, errorFn, true)
 }
