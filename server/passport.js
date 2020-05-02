@@ -1,7 +1,7 @@
-const {app, passport} = require('./express')
+const passport = require('passport')
 require('@config/passport')(passport)
 
-app.use(passport.initialize())
-app.use(passport.session())
-
-module.exports = app
+module.exports = (app) => {
+    app.use(passport.initialize())
+    app.use(passport.session())
+}
