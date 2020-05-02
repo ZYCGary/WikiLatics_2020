@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs')
-const {HASHING_SALT} = require('@config/hashing')
+const {HASHING_SALT} = require('../../config/hashing')
 
 const collectionName = "users";
 const schema = {

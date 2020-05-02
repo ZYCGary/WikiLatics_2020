@@ -1,5 +1,5 @@
 const session = require('express-session')
-const sessionConfig = require('@config/session')
+const sessionConfig = require('../config/session')
 
 module.exports = (app) => {
     app.use(session({
