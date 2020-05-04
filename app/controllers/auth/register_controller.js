@@ -1,4 +1,4 @@
-const {APP_NAME} = require('@config/app')
+const {APP_NAME} = require('../../../config/app')
 const passport = require('passport')
 
 const index = (req, res, next) => {
