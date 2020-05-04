@@ -13,7 +13,7 @@ mongoose.connect(dbPath, {
     useUnifiedTopology: true,
     useCreateIndex: true
 })
-    .then(r => console.log("> successfully opened the database"))
-    .catch(err => console.log("> error occurred from the database"))
+    .then(() => console.log("> successfully opened the database"))
+    .catch(() => console.log("> error occurred from the database"))
 
 module.exports = mongoose
