@@ -1,13 +1,13 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 const { authenticated } = require('../app/middlewares/authentication')
+const analyticsController = require('../app/controllers/analytics_controller')
 
-router.use(authenticated);
+router.use(authenticated)
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('Analytics page');
-});
+router.get('/', analyticsController.index)
+router.post('/import-data', analyticsController.importData)
+router.post('/get-author-names', analyticsController.getAuthorNames)
 
-module.exports = router;
+module.exports = router
