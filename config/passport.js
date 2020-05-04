@@ -1,6 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy
-const User = require('@models/user_model')
-const UserService = require('@services/user_service')
+const User = require('../app/models/user_model')
+const UserService = require('../app/services/user_service')
 
 module.exports = function (passport) {
     // used to serialize the user for the session

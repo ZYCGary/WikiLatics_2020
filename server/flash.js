@@ -1,5 +1,5 @@
-const {app, flash} = require('./express')
+const flash = require('connect-flash')
 
-app.use(flash())
-
-module.exports = app
+module.exports = (app) => {
+    app.use(flash())
+}

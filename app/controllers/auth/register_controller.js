@@ -1,6 +1,6 @@
-const {APP_NAME} = require('@config/app')
+const {APP_NAME} = require('../../../config/app')
 const passport = require('passport')
-const User = require('@services/user_service')
+const User = require('../../services/user_service')
 
 const index = (req, res, next) => {
     res.render('auth/register', {
