@@ -1,8 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs')
-const {HASHING_SALT} = require('../../config/hashing')
-
-const collectionName = "users";
 const schema = {
     // passport-local schema
     local: {
@@ -29,33 +25,6 @@ const schema = {
         }
     }
 };
-const UserSchema = mongoose.Schema(schema);
+const UserSchema = new mongoose.Schema(schema);
 
-UserSchema.statics.create = (userData) => {
-    return new Promise((resolve, reject) => {
-        // validate existence
-        this.findOne({$or: [{'local.username': userData.username}, {'local.email': userData.email}]})
-            .then(user => {
-                if (user)
-                    resolve(false)
-
-                // hash user password
-                userData.password = bcrypt.hashSync(userData.password, HASHING_SALT)
-
-                const newUser = new User({
-                    'local.username': userData.username,
-                    'local.email': userData.email,
-                    'local.password': userData.password,
-                })
-
-                newUser.save().then(newUser => {
-                    resolve(newUser)
-                })
-            })
-            .catch(err => {
-                reject(err)
-            })
-    })
-}
-
-module.exports = mongoose.model(collectionName, UserSchema);
+module.exports = mongoose.model('User', UserSchema, 'users');
