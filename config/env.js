@@ -1,6 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
-module.exports = (env_key, default_value) => {
-    return process.env[env_key] ? process.env[env_key] : default_value;
+module.exports = {
+    ENV: process.env.NODE_ENV || 'dev',
+    PORT: process.env.PORT || '3000',
 }

@@ -1,5 +1,3 @@
-const env = require('./env')
-
 module.exports = {
     username: {
         min: 6,

@@ -1,5 +1,3 @@
-const env = require('./env')
-
 module.exports = {
-    HASHING_SALT: parseInt(env('HASHING_SALT', 10))
+    HASHING_SALT: parseInt(process.env.HASHING_SALT) || 10
 }
