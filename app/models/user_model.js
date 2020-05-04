@@ -1,4 +1,6 @@
+
 const mongoose = require('mongoose');
+
 const schema = {
     // passport-local schema
     local: {
