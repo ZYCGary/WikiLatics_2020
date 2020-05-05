@@ -32,6 +32,12 @@ async function initAnalytics() {
 }
 
 /*
+* -------------------------------------------------------------------------------
+* Author Analytics Functions
+* --------------------------------------------------------------------------------
+*/
+
+/*
 * Get all distinct author names
 */
 async function getAuthorNames() {
@@ -49,4 +55,22 @@ function autoCompleteAuthorName(nameList) {
         lookupLimit: 10,
         minChars: 2
     });
+}
+
+/*
+* -------------------------------------------------------------------------------
+* Overall Analytics Functions
+* --------------------------------------------------------------------------------
+*/
+
+/*
+* Send AJAX request to get the overall analytics results
+*/
+async function getOverallResults(filter) {
+    return $.post({
+        url: 'analytics/overall-tops',
+        data: {
+            filter: filter
+        }
+    })
 }

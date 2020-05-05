@@ -12,6 +12,19 @@ body {
   }
 }
 
+/* Hide number input spinners/arrows */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 /* header */
 #app-header {
   #logout {
@@ -20,7 +33,7 @@ body {
 }
 
 /* home page */
-#app-home{
+#app-home {
   #import-data, #get-started {
     font-size: 2em;
   }
