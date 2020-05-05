@@ -17,14 +17,8 @@ async function initAnalytics() {
 
     $.when(getAuthorNames(), getAuthorNames()).then(
         // All initialisation succeed, render results on the page
-        (result1, result2) => {
-            console.log(result1, result2)
-            const authorNames = result1.names
-            console.log(authorNames)
-            $('#author-name').autocomplete({
-                source: ['abc', '42', 'asfd', '8965'],
-                minLength: 3
-            });
+        (authorNames, result2) => {
+            autoCompleteAuthorName(authorNames.names)
             Swal.close()
         },
         // One of the requests fails, reject the initialisation process
@@ -47,8 +41,12 @@ async function getAuthorNames() {
 }
 
 /*
-* Autocomplete
+* Autocomplete author name
 */
-function autoComplete(list) {
-
+function autoCompleteAuthorName(nameList) {
+    $('#author-name').autocomplete({
+        lookup: nameList,
+        lookupLimit: 10,
+        minChars: 2
+    });
 }
