@@ -1,4 +1,5 @@
 const EditorService = require('../services/editor_service')
+const RevisionService = require('../services/revision_service')
 
 const index = (req, res, next) => {
     let options = {
@@ -30,8 +31,13 @@ const importData = async (req, res, next) => {
 
 }
 
-const getAuthorNames = (req, res, next) => {
-
+const getAuthorNames = async (req, res, next) => {
+    try {
+        const authorNames = await RevisionService.findAllAuthorNames()
+        res.status(200).json({names: authorNames})
+    } catch (err) {
+        res.status(500).json(err)
+    }
 }
 
 module.exports = {

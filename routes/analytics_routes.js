@@ -8,6 +8,6 @@ router.use(authenticated)
 
 router.get('/', analyticsController.index)
 router.post('/import-data', analyticsController.importData)
-router.post('/get-author-names', analyticsController.getAuthorNames)
+router.post('/get-authors', analyticsController.getAuthorNames)
 
 module.exports = router

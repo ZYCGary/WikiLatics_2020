@@ -11,7 +11,7 @@ const importData = () => {
             type = 'POST',
             url = '/analytics/import-data',
             data = {},
-            doneFn = (result) => {
+            doneFn = () => {
                 Toast.fire({
                     icon: 'success',
                     title: 'Data imported. You are ready to analytic data'

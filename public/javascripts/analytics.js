@@ -1,5 +1,5 @@
-$(document).ready(function () {
-    initAnalytics()
+$(document).ready(async function () {
+    await initAnalytics()
 })
 
 /*
@@ -7,7 +7,7 @@ $(document).ready(function () {
 * This function is always called when the analytics page is loaded, requesting for necessary data and parsing
 * default analytics results of Overall, Individual and Author Analytics components.
 */
-function initAnalytics() {
+async function initAnalytics() {
     Swal.fire({
         icon: 'info',
         title: 'Analysing Data ...',
@@ -15,30 +15,29 @@ function initAnalytics() {
         allowOutsideClick: false
     })
 
-    let tasks = {}
-    tasks.authorNames = getAuthorNames(done)
-
-    try {
-        let {authorNames} = async.parallel(tasks)
-        console.log(authorNames)
-    }catch (err) {
-        console.err(err)
-    }
+    $.when(getAuthorNames(), getAuthorNames()).then(
+        // All initialisation succeed, render results on the page
+        (result1, result2) => {
+            console.log(result1, result2)
+            const authorNames = result1.names
+            console.log(authorNames)
+            Swal.close()
+        },
+        // One of the requests fails, reject the initialisation process
+        () => {
+            Swal.close()
+            Toast.fire({
+                icon: 'error',
+                title: 'Server internal error, please refresh the page to retry'
+            })
+        })
 }
 
 /*
 * Get all distinct author names
 */
-async function getAuthorNames(done) {
-    let type = 'POST',
-        url = '/analytics/get-authors',
-        data = {},
-        doneFn = (result) => {
-            done(null, result.names)
-        },
-        errorFn = (err) => {
-            done(err, null)
-        }
-
-    sendAjaxRequest(false, {}, type, url, data, doneFn, errorFn, true)
+async function getAuthorNames() {
+    return $.post({
+        url: '/analytics/get-authors',
+    })
 }
