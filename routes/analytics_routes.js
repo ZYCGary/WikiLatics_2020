@@ -9,5 +9,6 @@ router.use(authenticated)
 router.get('/', analyticsController.index)
 router.post('/import-data', analyticsController.importData)
 router.post('/get-authors', analyticsController.getAuthorNames)
+router.post('/overall-tops', analyticsController.getOverallTopArticles)
 
 module.exports = router

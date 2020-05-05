@@ -1,7 +1,7 @@
 const EditorService = require('../services/editor_service')
 const RevisionService = require('../services/revision_service')
 
-const index = (req, res, next) => {
+const index = (req, res) => {
     let options = {
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
@@ -17,7 +17,7 @@ const index = (req, res, next) => {
 * Import analytics data from local files to database.
 * Data import is a required before data analytics.
 */
-const importData = async (req, res, next) => {
+const importData = async (req, res) => {
     try {
         await Promise.all([
             EditorService.importEditors('bots'),
@@ -31,7 +31,7 @@ const importData = async (req, res, next) => {
 
 }
 
-const getAuthorNames = async (req, res, next) => {
+const getAuthorNames = async (req, res) => {
     try {
         const authorNames = await RevisionService.findAllAuthorNames()
         res.status(200).json({names: authorNames})
@@ -40,8 +40,27 @@ const getAuthorNames = async (req, res, next) => {
     }
 }
 
+const getOverallTopArticles = async (req, res) => {
+    const filter = req.body.filter
+    try {
+        const [topRevisions, topUsers, topHistories] = await Promise.all([
+            RevisionService.findTopArticlesByRevisionCount(filter),
+            RevisionService.findTopArticlesByRegisteredUserCount(filter),
+            RevisionService.findTopArticlesByHistory(filter)
+        ])
+        res.status(200).json({
+            topRevisions: topRevisions,
+            topUsers: topUsers,
+            topHistories: topHistories
+        })
+    } catch (err) {
+        res.status(500).json({message: 'Failed to get analytics results because of server internal errors'})
+    }
+}
+
 module.exports = {
     index,
     importData,
-    getAuthorNames
+    getAuthorNames,
+    getOverallTopArticles
 }
