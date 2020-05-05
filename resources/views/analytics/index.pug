@@ -1,6 +1,28 @@
 extends ../layouts/layout
 
 block content
-  h1 This is analytics page
-  include _sidebar
-  include _content
+  #analytics.container
+    .row
+      .col-md-12
+        .mb-3.card
+          //- tab header
+          .card-header.card-header-tab-animation
+            ul.nav.nav-justified
+              li.nav-item
+                a.nav-link.active(data-toggle='tab' href='#overall-analytics') Overall Analytics
+              li.nav-item
+                a.nav-link(data-toggle='tab' href='#article-analytics') Individual Article Analytics
+              li.nav-item
+                a.nav-link(data-toggle='tab' href='#author-analytics') Author Analytics
+          //- tab content
+          .card-body
+            .tab-content
+              #overall-analytics.tab-pane.active(role='tabpanel')
+                include overall
+              #article-analytics.tab-pane(role='tabpanel')
+                include article
+              #author-analytics.tab-pane(role='tabpanel')
+                include author
+
+block javascripts-foot
+  script(src="/javascripts/analytics.js")

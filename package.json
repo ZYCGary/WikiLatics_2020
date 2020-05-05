@@ -34,6 +34,7 @@
     "sweetalert2": "^9.10.12"
   },
   "devDependencies": {
+    "@types/async": "^3.2.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/connect-flash": "0.0.35",
     "@types/cookie-parser": "^1.4.2",
@@ -42,7 +43,7 @@
     "@types/mongodb": "^3.5.15",
     "@types/mongoose": "^5.7.15",
     "@types/morgan": "^1.9.0",
-    "@types/passport": "^0.4.7",
+    "@types/passport": "^1.0.3",
     "@types/passport-local": "^1.0.33",
     "@types/pug": "^2.0.4",
     "@types/serve-favicon": "^2.5.0",
