@@ -1,4 +1,4 @@
-const EditorService = require('@services/editor_service')
+const EditorService = require('../services/editor_service')
 
 const index = (req, res, next) => {
     let options = {

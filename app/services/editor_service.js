@@ -1,9 +1,8 @@
 const fs = require('fs')
 const path = require('path')
-const async = require('async')
-const Bot = require('@models/bot_model')
-const Admin = require('@models/admin_model')
-const Revision = require('@models/revision_model')
+const Bot = require('../models/bot_model')
+const Admin = require('../models/admin_model')
+const Revision = require('../models/revision_model')
 
 /*
 * Import bot authors and administrator author stored in .txt files into database.bots or database.admins
