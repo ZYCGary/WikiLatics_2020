@@ -27,6 +27,7 @@ const authenticated = async (req, res, next) => {
         } else {
             res.redirect('/login')
         }
+
     }
 }
 
