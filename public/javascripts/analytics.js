@@ -21,6 +21,10 @@ async function initAnalytics() {
             console.log(result1, result2)
             const authorNames = result1.names
             console.log(authorNames)
+            $('#author-name').autocomplete({
+                source: ['abc', '42', 'asfd', '8965'],
+                minLength: 3
+            });
             Swal.close()
         },
         // One of the requests fails, reject the initialisation process
@@ -40,4 +44,11 @@ async function getAuthorNames() {
     return $.post({
         url: '/analytics/get-authors',
     })
+}
+
+/*
+* Autocomplete
+*/
+function autoComplete(list) {
+
 }
