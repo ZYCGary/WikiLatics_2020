@@ -40,14 +40,24 @@ const getAuthorNames = async (req, res) => {
     }
 }
 
+const analyseByAuthor = async (req, res) => {
+    try {
+        const user = req.body.author
+        const results = await RevisionService.findRevisionsByUser(user)
+        res.status(200).json(results)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
 const getOverallTopArticles = async (req, res) => {
     const filter = req.body.filter
     try {
-       const [topRevisions, topUsers, topHistories] = await Promise.all([
-           RevisionService.findTopArticlesByRevisionCount(filter),
-           RevisionService.findTopArticlesByRegisteredUserCount(filter),
-           RevisionService.findTopArticlesByHistory(filter)
-       ])
+        const [topRevisions, topUsers, topHistories] = await Promise.all([
+            RevisionService.findTopArticlesByRevisionCount(filter),
+            RevisionService.findTopArticlesByRegisteredUserCount(filter),
+            RevisionService.findTopArticlesByHistory(filter)
+        ])
         res.status(200).json({
             topRevisions: topRevisions,
             topUsers: topUsers,
@@ -62,5 +72,6 @@ module.exports = {
     index,
     importData,
     getAuthorNames,
+    analyseByAuthor,
     getOverallTopArticles
 }
