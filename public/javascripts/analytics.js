@@ -1,5 +1,8 @@
 $(document).ready(async function () {
     await initAnalytics()
+    $('#overall-search-btn').on('click', function () {
+        changeFilter(parseInt($('#overall-filter').val()))
+    })
 })
 
 /*
@@ -104,4 +107,27 @@ function buildTopArticlesTable(table, title, rows) {
         }
         $(`${table} tbody`).append(tr)
     })
+}
+
+/**
+ * Process overall analytics with a customised filter.
+ */
+function changeFilter(filter) {
+    let loadingContent = {
+            title: 'Analysing ...',
+            text: 'Making overall analytics ...'
+        },
+        type = 'POST',
+        url = '/analytics/overall-tops',
+        data = {
+            filter: filter
+        },
+        doneFn = (results) => {
+            $('#overall-top-articles-tables tbody').empty()
+            renderTopArticles(filter, results)
+        },
+        errorFn = (error) => {
+        }
+
+    sendAjaxRequest(true, loadingContent, type, url, data, doneFn, errorFn, true)
 }
