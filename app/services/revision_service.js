@@ -133,6 +133,9 @@ const findTopArticlesByHistory = async (filter) => {
                 }
             }
         ])
+        results.forEach(result => {
+            result.age = Math.floor(result.age)
+        })
         return {
             max: results.slice(0, filter),
             min: results.reverse().slice(0, filter)

@@ -6,7 +6,7 @@
 
 .row.mt-4
   //- Top articles with the highest number of revisions
-  .col-lg-6
+  .col-lg-6#overall-max-revision-table
     .main-card.mb-3.card
       .card-body
         h5.card-title Top 2 articles with the highest number of revisions
@@ -17,17 +17,9 @@
               th.text-center Title
               th.text-center Number of Revisions
           tbody
-            tr
-              th.text-center(scope='row') 1
-              td.text-center Mark
-              td.text-center 1234
-            tr
-              th.text-center(scope='row') 2
-              td.text-center Jacob
-              td.text-center 123
 
   //- Top articles with the smallest number of revisions
-  .col-lg-6
+  .col-lg-6#overall-min-revision-table
     .main-card.mb-3.card
       .card-body
         h5.card-title Top 2 articles with the smallest number of revisions
@@ -38,108 +30,55 @@
               th.text-center Title
               th.text-center Number of Revisions
           tbody
-            tr
-              th.text-center(scope='row') 1
-              td.text-center Mark
-              td.text-center 2
-            tr
-              th.text-center(scope='row') 2
-              td.text-center Jacob
-              td.text-center 5
 
   //- Top articles edited by the largest group of registered users
-  .col-lg-6
+  .col-lg-6#overall-max-user-table
     .main-card.mb-3.card
       .card-body
         h5.card-title Top 2 articles edited by the largest group of registered users
         table.mb-0.table.table-striped
           thead
             tr
-              th #
-              th First Name
-              th Last Name
-              th Username
+              th.text-center #
+              th.text-center Title
+              th.text-center Number of Editors
           tbody
-            tr
-              th(scope='row') 1
-              td Mark
-              td Otto
-              td @mdo
-            tr
-              th(scope='row') 2
-              td Jacob
-              td Thornton
-              td @fat
-
 
   //- Top articles edited by the smallest group of registered users
-  .col-lg-6
+  .col-lg-6#overall-min-user-table
     .main-card.mb-3.card
       .card-body
         h5.card-title Top 2 articles edited by the smallest group of registered users
         table.mb-0.table.table-striped
           thead
             tr
-              th #
-              th First Name
-              th Last Name
-              th Username
+              th.text-center #
+              th.text-center Title
+              th.text-center Number of Editors
           tbody
-            tr
-              th(scope='row') 1
-              td Mark
-              td Otto
-              td @mdo
-            tr
-              th(scope='row') 2
-              td Jacob
-              td Thornton
-              td @fat
 
   //- Top articles with the longest history
-  .col-lg-6
+  .col-lg-6#overall-max-history-table
     .main-card.mb-3.card
       .card-body
         h5.card-title Top 2 articles with the longest history
         table.mb-0.table.table-striped
           thead
             tr
-              th #
-              th First Name
-              th Last Name
-              th Username
+              th.text-center #
+              th.text-center Title
+              th.text-center History (Days)
           tbody
-            tr
-              th(scope='row') 1
-              td Mark
-              td Otto
-              td @mdo
-            tr
-              th(scope='row') 2
-              td Jacob
-              td Thornton
-              td @fat
 
   //- Top articles with the shortest history
-  .col-lg-6
+  .col-lg-6#overall-min-history-table
     .main-card.mb-3.card
       .card-body
         h5.card-title Top 2 articles with the shortest history
         table.mb-0.table.table-striped
           thead
             tr
-              th #
-              th First Name
-              th Last Name
-              th Username
+              th.text-center #
+              th.text-center Title
+              th.text-center History (Days)
           tbody
-            tr
-              th(scope='row') 1
-              td Mark
-              td Otto
-              td @mdo
-            tr
-              th(scope='row') 2
-              td Jacob
-              td Thornton
-              td @fat
