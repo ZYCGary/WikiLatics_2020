@@ -15,7 +15,7 @@ async function initAnalytics() {
         allowOutsideClick: false
     })
 
-    $.when(getAuthorNames(), getAuthorNames()).then(
+    $.when(getAuthorNames(), getOverallResults(2)).then(
         // All initialisation succeed, render results on the page
         (authorNames, result2) => {
             autoCompleteAuthorName(authorNames.names)

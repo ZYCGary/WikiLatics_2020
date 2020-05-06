@@ -43,11 +43,11 @@ const getAuthorNames = async (req, res) => {
 const getOverallTopArticles = async (req, res) => {
     const filter = req.body.filter
     try {
-        const [topRevisions, topUsers, topHistories] = await Promise.all([
-            RevisionService.findTopArticlesByRevisionCount(filter),
-            RevisionService.findTopArticlesByRegisteredUserCount(filter),
-            RevisionService.findTopArticlesByHistory(filter)
-        ])
+       const [topRevisions, topUsers, topHistories] = await Promise.all([
+           RevisionService.findTopArticlesByRevisionCount(filter),
+           RevisionService.findTopArticlesByRegisteredUserCount(filter),
+           RevisionService.findTopArticlesByHistory(filter)
+       ])
         res.status(200).json({
             topRevisions: topRevisions,
             topUsers: topUsers,
