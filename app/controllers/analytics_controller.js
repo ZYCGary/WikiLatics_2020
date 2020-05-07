@@ -79,11 +79,30 @@ const getArticlesInfo = async (req, res) => {
     }
 }
 
+const analyseArticle = async (req, res) => {
+    const article = req.body.article
+    const latestTimestamp = await RevisionService.findLatestTimestamp(article)
+    const timeDiff = (new Date() - latestTimestamp) / (1000 * 3600 * 24)
+
+    // Update article revisions if it is out of date.
+    if (timeDiff > 1) {
+        // TODO: update revisions via MediaWiki API.
+        const newRevisionCount = await RevisionService.updateRevisions(article, latestTimestamp.toISOString())
+        req.flash('success', `${newRevisionCount} new revisions downloaded.`)
+    } else {
+        req.flash('success', 'Your data is up to data, no new revision downloaded.')
+    }
+    // TODO: search & construct results
+
+    console.log(timeDiff)
+}
+
 module.exports = {
     index,
     importData,
     getAuthorNames,
     analyseByAuthor,
     getOverallTopArticles,
-    getArticlesInfo
+    getArticlesInfo,
+    analyseArticle
 }

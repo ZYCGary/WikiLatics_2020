@@ -21,6 +21,7 @@
     "express": "~4.16.1",
     "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
+    "is-ip": "^3.1.0",
     "jquery": "^3.5.1",
     "jquery-validation": "^1.19.1",
     "jsonwebtoken": "^8.5.1",
@@ -30,6 +31,8 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pug": "^2.0.4",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
     "serve-favicon": "^2.5.0",
     "sweetalert2": "^9.10.12"
   },
@@ -46,6 +49,7 @@
     "@types/passport": "^1.0.3",
     "@types/passport-local": "^1.0.33",
     "@types/pug": "^2.0.4",
+    "@types/request": "^2.48.4",
     "@types/serve-favicon": "^2.5.0",
     "dotenv": "^8.2.0",
     "node-sass": "^4.14.1"

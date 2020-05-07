@@ -6,6 +6,9 @@ $(document).ready(async function () {
     $('#author-search-btn').on('click', function () {
         analyseAuthor($('#author-name').val())
     })
+    $('#article-search-btn').on('click', function () {
+        analyseArticle($('#article-select').val())
+    })
 })
 
 /**
@@ -24,9 +27,10 @@ async function initAnalytics() {
     $.when(getAuthorNames(), getOverallResults(2), getArticlesInfo()).then(
         // All initialisation succeed, render results on the page
         (authorNames, topArticles, articleInfo) => {
-            autoCompleteAuthorName(authorNames.names)
-            renderTopArticles(2, topArticles)
-            console.log(articleInfo)
+            // autoCompleteAuthorName(authorNames.names)
+            // renderTopArticles(2, topArticles)
+            console.log(articleInfo.articlesInfo)
+            renderArticlesInfo(articleInfo.articlesInfo)
             Swal.close()
         },
         // One of the requests fails, reject the initialisation process
@@ -256,4 +260,38 @@ async function getArticlesInfo() {
     return $.post({
         url: 'analytics/get-articles',
     })
+}
+
+/**
+ * Render articles information into the dropdown menu.
+ */
+function renderArticlesInfo(articlesInfo) {
+    articlesInfo.forEach(info => {
+        $('#article-select').append($('<option/>', {
+            'text': info._id,
+            'value': info._id
+        }))
+    })
+}
+
+/**
+ * Send AJAX request to analyse selected article.
+ */
+function analyseArticle(article) {
+    let loadingContent = {
+            title: 'Analysing ...',
+            text: 'Making individual article analytics ...'
+        },
+        type = 'POST',
+        url = '/analytics/analyse-article',
+        data = {
+            article: article
+        },
+        doneFn = (results) => {
+            console.log(results)
+        },
+        errorFn = (error) => {
+        }
+
+    sendAjaxRequest(true, loadingContent, type, url, data, doneFn, errorFn, true)
 }

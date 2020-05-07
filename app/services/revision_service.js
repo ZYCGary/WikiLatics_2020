@@ -1,3 +1,5 @@
+const request = require('request-promise')
+const isIp = require('is-ip')
 const Revision = require('../models/revision_model')
 const Bot = require('../models/bot_model')
 
@@ -200,11 +202,81 @@ const findArticlesWithTitleAndRevisionCount = async () => {
     }
 }
 
+/**
+ * Find the latest revision timestamp of an article.
+ *
+ * @param {string} article - The article title.
+ * @return {Promise} - Resolve the latest timestamp if succeed, reject error if fail.
+ */
+const findLatestTimestamp = async (article) => {
+    try {
+        const latestRevision = await Revision.findOne({title: article}).sort({timestamp: -1}).select('timestamp')
+        return latestRevision.timestamp
+    } catch (err) {
+        return new Error(err)
+    }
+}
+
+const updateRevisions = async (article, startTime) => {
+    // build API query url.
+    const wikiEndpoint = "https://en.wikipedia.org/w/api.php";
+    const parameters = [
+        "titles=" + article,
+        "rvstart=" + startTime,
+        "rvdir=newer",
+        "action=query",
+        "prop=revisions",
+        "rvlimit=500",
+        "rvprop=user|timestamp",
+        "formatversion=2",
+        "format=json"
+    ]
+    const url = wikiEndpoint + "?" + parameters.join("&");
+    const options = {
+        url: url,
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Accept-Charset': 'utf-8'
+        }
+    };
+
+    try {
+        // search for new revisions
+        const data = await request(options)
+        console.log(data)
+        const json = JSON.parse(data);
+        const revisions = json.query.pages[0].revisions;
+
+        console.log(revisions.length, revisions)
+        // if find new revisions, save them into database and return the number of new revisions.
+        if (revisions.length > 1) {
+            await Promise.all(revisions.map(revision => {
+                let newRevision = new Revision({
+                    title: article,
+                    user: revision.user,
+                    timestamp: revision.timestamp,
+                    anon: isIp(revision.user)
+                })
+                console.log(revision.timestamp, startTime)
+                newRevision.save()
+            }))
+            return revisions.length
+        }
+        return 0
+    } catch (err) {
+        return new Error(err)
+    }
+
+}
+
 module.exports = {
     findAllAuthorNames,
     findRevisionsByUser,
     findTopArticlesByRevisionCount,
     findTopArticlesByRegisteredUserCount,
     findTopArticlesByHistory,
-    findArticlesWithTitleAndRevisionCount
+    findArticlesWithTitleAndRevisionCount,
+    findLatestTimestamp,
+    updateRevisions
 }
