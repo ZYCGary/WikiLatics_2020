@@ -21,11 +21,12 @@ async function initAnalytics() {
         allowOutsideClick: false
     })
 
-    $.when(getAuthorNames(), getOverallResults(2)).then(
+    $.when(getAuthorNames(), getOverallResults(2), getArticlesInfo()).then(
         // All initialisation succeed, render results on the page
-        (authorNames, topArticles) => {
+        (authorNames, topArticles, articleInfo) => {
             autoCompleteAuthorName(authorNames.names)
             renderTopArticles(2, topArticles)
+            console.log(articleInfo)
             Swal.close()
         },
         // One of the requests fails, reject the initialisation process
@@ -240,4 +241,19 @@ function changeFilter(filter) {
         }
 
     sendAjaxRequest(true, loadingContent, type, url, data, doneFn, errorFn, true)
+}
+
+/**
+ * -------------------------------------------------------------------------------
+ * Individual Article Analytics Functions
+ * --------------------------------------------------------------------------------
+ */
+
+/**
+ * Send AJAX request to get all article titles and the number of their revisions.
+ */
+async function getArticlesInfo() {
+    return $.post({
+        url: 'analytics/get-articles',
+    })
 }

@@ -178,10 +178,33 @@ const findRevisionsByUser = async (user) => {
 
 }
 
+/**
+ * Find all available articles with their title and the number of revisions.
+ *
+ * @return {Promise} - Resolve search results if succeed, reject error if fail.
+ */
+const findArticlesWithTitleAndRevisionCount = async () => {
+    try {
+        return await Revision.aggregate([
+            {
+                $group: {
+                    _id: '$title',
+                    count: {
+                        $sum: 1
+                    }
+                }
+            }
+        ])
+    } catch (err) {
+        return new Error(err)
+    }
+}
+
 module.exports = {
     findAllAuthorNames,
     findRevisionsByUser,
     findTopArticlesByRevisionCount,
     findTopArticlesByRegisteredUserCount,
-    findTopArticlesByHistory
+    findTopArticlesByHistory,
+    findArticlesWithTitleAndRevisionCount
 }

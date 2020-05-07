@@ -16,4 +16,7 @@ router.post('/analyse-by-author', analyticsController.analyseByAuthor)
 // Overall analytics routers
 router.post('/overall-tops', analyticsController.getOverallTopArticles)
 
+// Individual article analytics routers
+router.post('/get-articles', analyticsController.getArticlesInfo)
+
 module.exports = router
