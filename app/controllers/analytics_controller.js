@@ -102,6 +102,13 @@ const analyseArticle = async (req, res) => {
             RevisionService.getTopNewsByArticle(article)
         ])
         console.log(revisionCount, topRegularUsers, topNews)
+        const analyseResults = {
+            title: article,
+            revisionCount: revisionCount,
+            topRegularUsers: topRegularUsers,
+            topNews: topNews
+        }
+        res.status(200).json(analyseResults)
     } catch (err) {
         res.status(500).json({message: 'Failed to get author analytics results because of server internal errors'})
     }

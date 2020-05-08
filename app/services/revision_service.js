@@ -278,7 +278,7 @@ const updateRevisions = async (article, startTime) => {
         }
         return 0
     } catch (err) {
-        return new Error(err)
+        throw new Error(err)
     }
 }
 
@@ -293,7 +293,7 @@ const getRevisionCountByArticle = async (article) => {
     try {
         return await Revision.find({title: article}).countDocuments()
     } catch (err) {
-        return new Error(err)
+        throw new Error(err)
     }
 }
 
@@ -335,7 +335,7 @@ const getTopRegularUsersByArticle = async (article) => {
         ])
         return topUsers.slice(1, 6)
     } catch (err) {
-        return new Error(err)
+        throw new Error(err)
     }
 }
 
@@ -360,7 +360,6 @@ const getTopNewsByArticle = async (article) => {
             })
         })
         return topNews
-
     } catch (err) {
         throw new Error(err)
     }

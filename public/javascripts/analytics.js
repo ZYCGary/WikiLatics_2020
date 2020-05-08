@@ -269,7 +269,7 @@ async function getArticlesInfo() {
 function renderArticlesInfo(articlesInfo) {
     articlesInfo.forEach(info => {
         $('#article-select').append($('<option/>', {
-            'text': info._id,
+            'text': `${info._id} (${info.count})`,
             'value': info._id
         }))
     })
@@ -289,10 +289,133 @@ function analyseArticle(article) {
             article: article
         },
         doneFn = (results) => {
-            console.log(results)
+            renderArticleSummary(results)
         },
         errorFn = (error) => {
         }
 
     sendAjaxRequest(true, loadingContent, type, url, data, doneFn, errorFn, true)
+}
+
+/**
+ * Render analysed article summary information.
+ */
+function renderArticleSummary(summary) {
+    let wrapper = $('#article-analytics-results')
+    wrapper.empty()
+    let card = $('<div/>').addClass('card')
+    // result heading
+    let cardHeading = $('<div/>').addClass('card-header').attr('id', `article-heading-1`)
+    let button = $('<button/>').addClass('text-left m-0 p-0 btn btn-link btn-block').attr({
+        'type': 'button',
+        'data-toggle': 'collapse',
+        'data-target': `#article-collapse-1`,
+        'aria-expanded': 'true'
+    })
+    let h5 = $('<h5/>').addClass('m-0 p-0').append(
+        $('<a/>').addClass('nav-link').append(
+            $('<i/>').addClass('nav-link-icon lnr-inbox')
+        ).append(
+            $('<span/>').text(summary.title)
+        ).append(
+            $('<div/>').addClass('ml-auto badge badge-pill badge-secondary').text(summary.revisionCount)
+        )
+    )
+
+    // Collapse for top news and top regular users.
+    let collapse = $('<div/>', {
+        id: `article-collapse-1`,
+        'class': 'collapse',
+        'data-parent': '#article-analytics-results',
+        'aria-labelledby': `article-heading-1`
+    })
+
+    // Top 5 regular users table.
+    let userCardBody = $('<div/>', {
+            'class': 'card-body'
+        }).append($('<h5/>', {
+            'class': 'card-title',
+            'text': 'Top 5 regular users on this article'
+        })),
+        userTable = $('<table/>', {
+                'class': 'mb-0 table table-striped'
+            }
+        ),
+        userThead = $('<thead/>')
+            .append($('<tr/>')
+                .append($('<th/>', {
+                    'class': 'text-center',
+                    'style': 'width: 10%',
+                    'text': '#'
+                }))
+                .append($('<th/>', {
+                    'class': 'text-center',
+                    'style': 'width: 60%',
+                    'text': 'Regular Users'
+                }))
+                .append($('<th/>', {
+                    'class': 'text-center',
+                    'style': 'width: 20%',
+                    'text': 'Contributions'
+                }))),
+        userTbody = $('<tbody/>')
+    summary.topRegularUsers.forEach((user, index) => {
+        userTbody.append($('<tr/>')
+            .append($('<th/>', {
+                'class': 'text-center',
+                'scope': 'row',
+                'text': index + 1
+            }))
+            .append($('<td/>', {
+                'class': 'text-center',
+                'text': user._id
+            }))
+            .append($('<td/>', {
+                'class': 'text-center',
+                'text': user.count
+            })))
+    })
+    // Top 3 news table.
+    let newsCardBody = $('<div/>', {
+            'class': 'card-body'
+        }).append($('<h5/>', {
+            'class': 'card-title',
+            'text': 'Top 3 news about the individual article obtained'
+        })),
+        newsTable = $('<table/>', {
+                'class': 'mb-0 table table-striped'
+            }
+        ),
+        newsThead = $('<thead/>')
+            .append($('<tr/>')
+                .append($('<th/>', {
+                    'class': 'text-center',
+                    'style': 'width: 10%',
+                    'text': '#'
+                }))
+                .append($('<th/>', {
+                    'class': 'text-center',
+                    'style': 'width: 90%',
+                    'text': 'Regular Users'
+                }))),
+        newsTbody = $('<tbody/>')
+    summary.topNews.forEach((news, index) => {
+        newsTbody.append($('<tr/>')
+            .append($('<th/>', {
+                'class': 'text-center',
+                'scope': 'row',
+                'text': index + 1
+            }))
+            .append($('<td/>', {
+                'class': 'text-center'
+            })
+                .append($('<a/>', {
+                    'href': news.url,
+                    'text': news.title
+                }))))
+    })
+    card.append(cardHeading.append(button.append(h5)))
+        .append(collapse.append(userCardBody.append(userTable.append(userThead).append(userTbody)))
+            .append(newsCardBody.append(newsTable.append(newsThead).append(newsTbody))))
+    wrapper.append(card)
 }
