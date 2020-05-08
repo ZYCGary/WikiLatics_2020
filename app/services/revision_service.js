@@ -2,6 +2,7 @@ const request = require('request-promise')
 const isIp = require('is-ip')
 const Revision = require('../models/revision_model')
 const Bot = require('../models/bot_model')
+const Admin = require('../models/admin_model')
 
 /**
  * Find the name list of all distinct article editors/users.
@@ -196,6 +197,11 @@ const findArticlesWithTitleAndRevisionCount = async () => {
                         $sum: 1
                     }
                 }
+            },
+            {
+                $sort: {
+                    _id: 1
+                }
             }
         ])
     } catch (err) {
@@ -218,6 +224,14 @@ const findLatestTimestamp = async (article) => {
     }
 }
 
+/**
+ * Update an article revisions in the database to the latest one.
+ *
+ * @param {string} article - Article name.
+ * @param {string} startTime - The start time to update. The time is in ISO timestamp format.
+ *
+ * @return {Promise} Resolve the number of revisions updated s succeed, reject error if fail.
+ */
 const updateRevisions = async (article, startTime) => {
     // build API query url.
     const wikiEndpoint = "https://en.wikipedia.org/w/api.php";
@@ -248,7 +262,6 @@ const updateRevisions = async (article, startTime) => {
         const json = JSON.parse(data);
         const revisions = json.query.pages[0].revisions;
 
-        console.log(revisions.length, revisions)
         // if find new revisions, save them into database and return the number of new revisions.
         if (revisions.length > 1) {
             await Promise.all(revisions.map(revision => {
@@ -267,6 +280,73 @@ const updateRevisions = async (article, startTime) => {
     } catch (err) {
         return new Error(err)
     }
+}
+
+/**
+ * For the selected article, get the number of revisions.
+ *
+ * @param {string} article - Article name.
+ *
+ * @return Resolve article's revision count if succeed, reject error if fail.
+ */
+const getRevisionCountByArticle = async (article) => {
+    try {
+        return await Revision.find({title: article}).count()
+    } catch (err) {
+        return new Error(err)
+    }
+}
+
+/**
+ * For the selected article, get the top 5 regular users ranked by total revision numbers on this article, and the respective revision numbers
+ *
+ * @param {string} article - Article name.
+ *
+ * @return {Promise} Resolve top 5 regular users if succeed, reject error if fail.
+ */
+const getTopRegularUsersByArticle = async (article) => {
+    try {
+        const bots = await Bot.distinct('name'),
+            admins = await Admin.distinct('name')
+        const botsAndAdmins = bots.concat(admins)
+        const topUsers = await Revision.aggregate([
+            {
+                $match: {
+                    title: article,
+                    user: {
+                        $nin: botsAndAdmins
+                    },
+                    anon: false
+                }
+            },
+            {
+                $group: {
+                    _id: '$user',
+                    count: {
+                        $sum: 1
+                    }
+                }
+            },
+            {
+                $sort: {
+                    count: -1
+                }
+            }
+        ])
+        return topUsers.slice(1, 6)
+    } catch (err) {
+        return new Error(err)
+    }
+}
+
+/**
+ * For the selected article, get top 3 news about the selected individual article obtained using Reddit API.
+ *
+ * @param {string} article - Article name.
+ *
+ * @return {Promise} Resolve top 3 news about the selected individual article obtained  if succeed, reject error if fail.
+ */
+const getTopNewsByArticle = async (article) => {
 
 }
 
@@ -278,5 +358,8 @@ module.exports = {
     findTopArticlesByHistory,
     findArticlesWithTitleAndRevisionCount,
     findLatestTimestamp,
-    updateRevisions
+    updateRevisions,
+    getRevisionCountByArticle,
+    getTopRegularUsersByArticle,
+    getTopNewsByArticle
 }
