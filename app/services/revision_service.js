@@ -291,7 +291,7 @@ const updateRevisions = async (article, startTime) => {
  */
 const getRevisionCountByArticle = async (article) => {
     try {
-        return await Revision.find({title: article}).count()
+        return await Revision.find({title: article}).countDocuments()
     } catch (err) {
         return new Error(err)
     }
@@ -347,7 +347,23 @@ const getTopRegularUsersByArticle = async (article) => {
  * @return {Promise} Resolve top 3 news about the selected individual article obtained  if succeed, reject error if fail.
  */
 const getTopNewsByArticle = async (article) => {
+    const url = `https://www.reddit.com/r/news/search/.json?q=${article}&restrict_sr=1&limit=3&sort=top`
+    try {
+        const data = await request(url)
+        const json = JSON.parse(data);
+        const results = json.data.children
+        let topNews = []
+        results.forEach(result => {
+            topNews.push({
+                title: result.data.title,
+                url: result.data.url
+            })
+        })
+        return topNews
 
+    } catch (err) {
+        throw new Error(err)
+    }
 }
 
 module.exports = {
