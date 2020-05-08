@@ -44,7 +44,9 @@ const analyseByAuthor = async (req, res) => {
     try {
         const user = req.body.author
         const results = await RevisionService.findRevisionsByUser(user)
-        res.status(200).json(results)
+        results.length === 0
+            ? res.status(500).json(new Error().message = {message: 'No Result Found.'})
+            : res.status(200).json(results)
     } catch (err) {
         res.status(500).json(err)
     }

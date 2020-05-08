@@ -27,7 +27,7 @@ async function initAnalytics() {
     $.when(getAuthorNames(), getOverallResults(2), getArticlesInfo()).then(
         // All initialisation succeed, render results on the page
         (authorNames, topArticles, articleInfo) => {
-            // autoCompleteAuthorName(authorNames.names)
+            autoCompleteAuthorName(authorNames.names)
             // renderTopArticles(2, topArticles)
             console.log(articleInfo.articlesInfo)
             renderArticlesInfo(articleInfo.articlesInfo)
@@ -93,6 +93,7 @@ function analyseAuthor(authorName) {
                 renderAuthorAnalyticsResults(results)
             },
             errorFn = (error) => {
+                console.error(error)
             }
 
         sendAjaxRequest(true, loadingContent, type, url, data, doneFn, errorFn, true)

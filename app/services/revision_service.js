@@ -10,7 +10,7 @@ const Bot = require('../models/bot_model')
  */
 const findAllAuthorNames = async () => {
     try {
-        return await Revision.distinct('user')
+        return await Revision.find({anon: false}).distinct('user')
     } catch (err) {
         return new Error(err)
     }
@@ -159,7 +159,8 @@ const findRevisionsByUser = async (user) => {
         return await Revision.aggregate([
             {
                 $match: {
-                    user: user
+                    user: user,
+                    anon: false
                 }
             },
             {
@@ -244,7 +245,6 @@ const updateRevisions = async (article, startTime) => {
     try {
         // search for new revisions
         const data = await request(options)
-        console.log(data)
         const json = JSON.parse(data);
         const revisions = json.query.pages[0].revisions;
 
