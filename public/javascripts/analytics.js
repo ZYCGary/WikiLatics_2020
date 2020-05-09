@@ -24,12 +24,20 @@ async function initAnalytics() {
         allowOutsideClick: false
     })
 
-    $.when(getAuthorNames(), getOverallResults(2), getArticlesInfo()).then(
+    $.when(
+        getAuthorNames(),
+        getOverallResults(2),
+        getArticlesInfo(),
+        requestOverallRevisionDistributionData()
+    ).then(
         // All initialisation succeed, render results on the page
-        (authorNames, topArticles, articleInfo) => {
+        (authorNames, topArticles, articleInfo, overallChartsData) => {
             autoCompleteAuthorName(authorNames.names)
             renderTopArticles(2, topArticles)
             renderArticlesInfo(articleInfo.articlesInfo)
+            let pieChartData = overallChartsData[0].pie
+            renderPieChart(pieChartData)
+            console.log(pieChartData)
             Swal.close()
         },
         // One of the requests fails, reject the initialisation process
@@ -247,6 +255,72 @@ function changeFilter(filter) {
     sendAjaxRequest(true, loadingContent, type, url, data, doneFn, errorFn, true)
 }
 
+
+/**
+ * Render overall pie chart data on the page.
+ */
+function renderPieChart(data) {
+    // sort user type by the number of revisions
+    let userRevCount = {
+        regular: data.regularRevCount,
+        bot: data.botRevCount,
+        administrator: data.adminRevCount,
+        anonymous: data.anonRevCount
+    }
+    let sortedUserRevCount = Object.entries(userRevCount).sort((a, b) => a[1] - b[1]).reverse()
+    console.log(sortedUserRevCount)
+    let sortedUserTypes = []
+    sortedUserRevCount.forEach(item => {
+        sortedUserTypes.push({
+            type: item[0],
+            percent: (item[1] / data.totalRevCount * 100).toFixed(2)
+        })
+    })
+
+    // show pie chart description
+    $('#overall-pie-chart-description').text(`The graph shows the revision number distribution by user type, 
+    in which ${data.totalUserCount} number of users are taken into consideration for this analysis. 
+    From the pie chart, it is clear that the revisions were meade mostly by ${sortedUserTypes[0].type} users that cover for ${sortedUserTypes[0].percent} percent, 
+    followed by ${sortedUserTypes[1].type} users with ${sortedUserTypes[1].percent} percent. 
+    The ${sortedUserTypes[2].type} users stands at ${sortedUserTypes[2].percent} percent, 
+    which is larger than revisions made by ${sortedUserTypes[3].type} users (${sortedUserTypes[3].percent} percent).`)
+
+    // draw overall pie chart
+    let ctx = $('#overall-pie-chart')
+    let pieData = {
+        labels: [],
+        datasets: [{
+            data: [],
+            backgroundColor: [
+                'rgba(255, 99, 132)',
+                'rgba(54, 162, 235)',
+                'rgba(255, 206, 86)',
+                'rgba(75, 192, 192)'
+            ],
+        }]
+    }
+    let revCounts = {
+        Regular: data.regularRevCount,
+        Bot: data.botRevCount,
+        Administrator: data.adminRevCount,
+        Anonymous: data.anonRevCount
+    }
+    for (let [key, value] of Object.entries(revCounts)) {
+        pieData.labels.push(key)
+        pieData.datasets[0].data.push(value)
+    }
+    drawPieChar(ctx, pieData)
+}
+
+/**
+ * Request for chart data for the analytics on revision number distribution by year and by user type.
+ */
+function requestOverallRevisionDistributionData() {
+    return $.post({
+        url: 'analytics/overall-charts-data',
+    })
+}
+
 /**
  * -------------------------------------------------------------------------------
  * Individual Article Analytics Functions
@@ -417,4 +491,17 @@ function renderArticleSummary(summary) {
         .append(collapse.append(userCardBody.append(userTable.append(userThead).append(userTbody)))
             .append(newsCardBody.append(newsTable.append(newsThead).append(newsTbody))))
     wrapper.append(card)
+}
+
+/**
+ * -------------------------------------------------------------------------------
+ * Universal functions
+ * --------------------------------------------------------------------------------
+ */
+function drawPieChar(ctx, data, options) {
+    let myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options
+    });
 }
