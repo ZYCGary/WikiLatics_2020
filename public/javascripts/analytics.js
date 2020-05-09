@@ -363,6 +363,10 @@ function analyseArticle(article) {
         },
         doneFn = (results) => {
             renderArticleSummary(results)
+            Toast.fire({
+                icon: 'success',
+                title: results.message
+            })
         },
         errorFn = (error) => {
         }

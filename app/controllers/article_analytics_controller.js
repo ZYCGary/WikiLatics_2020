@@ -14,6 +14,7 @@ const getArticlesInfo = async (req, res) => {
 const analyseArticle = async (req, res) => {
     try {
         const article = req.body.article
+        let responseMessage = ''
         const latestTimestamp = await ArticleAnalyticsService.findLatestTimestamp(article)
         const timeDiff = (new Date() - latestTimestamp) / (1000 * 3600 * 24)
 
@@ -21,9 +22,9 @@ const analyseArticle = async (req, res) => {
         if (timeDiff > 1) {
             // Update revisions via MediaWiki API.
             const newRevisionCount = await ArticleAnalyticsService.updateRevisions(article, latestTimestamp.toISOString())
-            req.flash('success', `${newRevisionCount} new revisions downloaded.`)
+            responseMessage = `Your data is up-to-date, ${newRevisionCount} revisions downloaded.`
         } else {
-            req.flash('success', 'Your data is up to data, no new revision downloaded.')
+            responseMessage = 'Your data is up-to-date, no new revision need to be downloaded.'
         }
         // TODO: search & construct results
         const [revisionCount, topRegularUsers, topNews] = await Promise.all([
@@ -36,13 +37,15 @@ const analyseArticle = async (req, res) => {
             title: article,
             revisionCount: revisionCount,
             topRegularUsers: topRegularUsers,
-            topNews: topNews
+            topNews: topNews,
+            message: responseMessage
         }
         res.status(200).json(analyseResults)
     } catch (err) {
         res.status(500).json({message: 'Failed to get author analytics results because of server internal errors'})
     }
 }
+
 
 module.exports = {
     getArticlesInfo,
