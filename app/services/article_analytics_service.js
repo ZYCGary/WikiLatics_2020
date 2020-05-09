@@ -188,11 +188,141 @@ const getTopNewsByArticle = async (article) => {
     }
 }
 
+/**
+ * For selected article, get the revision number distributed by year and by user type.
+ *
+ * @param {string} article - The article title.
+ */
+const getRevDistributionByYearAndUserType = async (article) => {
+    const bots = await Bot.distinct('name')
+    const admins = await Admin.distinct('name')
+    const nonBotsOrAdmin = admins.concat(bots)
+
+    const [botRevDistribution, adminRevDistribution, anonRevDistribution, regularRevDistribution] = await Promise.all([
+        getRevDistributionByUserList(article, bots),
+        getRevDistributionByUserList(article, admins),
+        getAnonRevDistribution(article),
+        getRegularRevDistribution(article, nonBotsOrAdmin)
+    ])
+
+    return {
+        bot: botRevDistribution,
+        admin: adminRevDistribution,
+        anon: anonRevDistribution,
+        regular: regularRevDistribution
+    }
+}
+
+/**
+ * For selected article, get the revision number distributed by year and by a username list.
+ */
+const getRevDistributionByUserList = async (article, userList) => {
+    try {
+        return await Revision.aggregate([
+            {
+                $match: {
+                    title: article,
+                    user: {
+                        $in: userList
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $year: '$timestamp'
+                    },
+                    count: {
+                        $sum: 1
+                    }
+                }
+            },
+            {
+                $sort: {
+                    _id: 1
+                }
+            }
+        ])
+    } catch (err) {
+        throw new Error(err)
+    }
+}
+
+/**
+ * For selected article, get the revision number distributed by anonymous users by year.
+ */
+const getAnonRevDistribution = async (article) => {
+    try {
+        return await Revision.aggregate([
+            {
+                $match: {
+                    title: article,
+                    anon: true
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $year: '$timestamp'
+                    },
+                    count: {
+                        $sum: 1
+                    }
+                }
+            },
+            {
+                $sort: {
+                    _id: 1
+                }
+            }
+        ])
+    } catch (err) {
+        throw new Error(err)
+    }
+}
+
+/**
+ *  For selected article, get the revision number distributed by regular users by year.
+ */
+const getRegularRevDistribution = async (article, nameList) => {
+    try {
+        return await Revision.aggregate([
+            {
+                $match: {
+                    title: article,
+                    anon: false,
+                    user: {
+                        $nin: nameList
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $year: '$timestamp'
+                    },
+                    count: {
+                        $sum: 1
+                    }
+                }
+            },
+            {
+                $sort: {
+                    _id: 1
+                }
+            }
+        ])
+    } catch (err) {
+        throw new Error(err)
+    }
+}
+
 module.exports = {
     findArticlesWithTitleAndRevisionCount,
     findLatestTimestamp,
     updateRevisions,
     getRevisionCountByArticle,
     getTopRegularUsersByArticle,
-    getTopNewsByArticle
+    getTopNewsByArticle,
+    getRevDistributionByYearAndUserType
 }

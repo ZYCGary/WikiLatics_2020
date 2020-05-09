@@ -27,17 +27,18 @@ const analyseArticle = async (req, res) => {
             responseMessage = 'Your data is up-to-date, no new revision need to be downloaded.'
         }
         // TODO: search & construct results
-        const [revisionCount, topRegularUsers, topNews] = await Promise.all([
+        const [revisionCount, topRegularUsers, /*topNews,*/ barChartOneData] = await Promise.all([
             ArticleAnalyticsService.getRevisionCountByArticle(article),
             ArticleAnalyticsService.getTopRegularUsersByArticle(article),
-            ArticleAnalyticsService.getTopNewsByArticle(article)
+            // ArticleAnalyticsService.getTopNewsByArticle(article),
+            ArticleAnalyticsService.getRevDistributionByYearAndUserType(article)
         ])
-        console.log(revisionCount, topRegularUsers, topNews)
         const analyseResults = {
             title: article,
             revisionCount: revisionCount,
             topRegularUsers: topRegularUsers,
-            topNews: topNews,
+            // topNews: topNews,
+            barChartOneData: barChartOneData,
             message: responseMessage
         }
         res.status(200).json(analyseResults)

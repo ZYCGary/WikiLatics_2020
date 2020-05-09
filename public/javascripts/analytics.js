@@ -362,7 +362,8 @@ function analyseArticle(article) {
             article: article
         },
         doneFn = (results) => {
-            renderArticleSummary(results)
+            // renderArticleSummary(results)
+            renderArticleCharts(results)
             Toast.fire({
                 icon: 'success',
                 title: results.message
@@ -375,9 +376,9 @@ function analyseArticle(article) {
 }
 
 /**
- * Render analysed article summary information.
+ * Render analysed article information.
  */
-function renderArticleSummary(summary) {
+function renderArticleSummary(data) {
     let wrapper = $('#article-analytics-results')
     wrapper.empty()
     let card = $('<div/>').addClass('card')
@@ -393,9 +394,9 @@ function renderArticleSummary(summary) {
         $('<a/>').addClass('nav-link').append(
             $('<i/>').addClass('nav-link-icon lnr-inbox')
         ).append(
-            $('<span/>').text(summary.title)
+            $('<span/>').text(data.title)
         ).append(
-            $('<div/>').addClass('ml-auto badge badge-pill badge-secondary').text(summary.revisionCount)
+            $('<div/>').addClass('ml-auto badge badge-pill badge-secondary').text(data.revisionCount)
         )
     )
 
@@ -436,7 +437,7 @@ function renderArticleSummary(summary) {
                     'text': 'Contributions'
                 }))),
         userTbody = $('<tbody/>')
-    summary.topRegularUsers.forEach((user, index) => {
+    data.topRegularUsers.forEach((user, index) => {
         userTbody.append($('<tr/>')
             .append($('<th/>', {
                 'class': 'text-center',
@@ -476,7 +477,7 @@ function renderArticleSummary(summary) {
                     'text': 'Regular Users'
                 }))),
         newsTbody = $('<tbody/>')
-    summary.topNews.forEach((news, index) => {
+    data.topNews.forEach((news, index) => {
         newsTbody.append($('<tr/>')
             .append($('<th/>', {
                 'class': 'text-center',
@@ -497,6 +498,14 @@ function renderArticleSummary(summary) {
     wrapper.append(card)
 }
 
+function renderArticleCharts(data) {
+    // Render bar chart 1
+    let chartOneData = data.barChartOneData
+    console.log(chartOneData)
+    let ctx = $('#article-analytics-chart-1')
+    renderBarChartByYearByType(ctx, chartOneData)
+}
+
 /**
  * -------------------------------------------------------------------------------
  * Universal functions
@@ -508,4 +517,69 @@ function drawPieChar(ctx, data, options) {
         data: data,
         options: options
     });
+}
+
+function renderBarChartByYearByType(ctx, data, options) {
+    let minYear = Math.min(data.bot[0]._id, data.admin[0]._id, data.anon[0]._id, data.regular[0]._id)
+    let maxYear = Math.max(data.bot.reverse()[0]._id, data.admin.reverse()[0]._id, data.anon.reverse()[0]._id, data.regular.reverse()[0]._id)
+    let years = []
+    for (let year = minYear; year <= maxYear; year++) {
+        years.push(year)
+    }
+    let bot = reconstructUserTypesData(data.bot)
+    let admin = reconstructUserTypesData(data.admin)
+    let anon = reconstructUserTypesData(data.anon)
+    let regular = reconstructUserTypesData(data.regular)
+    let botData = buildBarChartDataByYear(years, bot)
+    let adminData = buildBarChartDataByYear(years, admin)
+    let anonData = buildBarChartDataByYear(years, anon)
+    let regularData = buildBarChartDataByYear(years, regular)
+
+    console.log(bot, admin, anon, regular)
+    console.log(botData, adminData, anonData, regularData)
+
+    let myPieChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: years,
+            datasets: [
+                {
+                    label: 'Bot',
+                    data: botData,
+                    backgroundColor: 'rgba(255, 99, 132)'
+                },
+                {
+                    label: 'Administrator',
+                    data: adminData,
+                    backgroundColor: 'rgba(54, 162, 235)'
+                },
+                {
+                    label: 'Anonymous',
+                    data: anonData,
+                    backgroundColor: 'rgba(255, 206, 86)'
+                },
+                {
+                    label: 'Regular',
+                    data: regularData,
+                    backgroundColor: 'rgba(75, 192, 192)'
+                }]
+        },
+        options: options
+    });
+}
+
+function reconstructUserTypesData(data) {
+    let result = {}
+    for (let rec of data) {
+        result[rec._id] = rec.count
+    }
+    return result
+}
+
+function buildBarChartDataByYear(year, data) {
+    let result = []
+    for (y of year) {
+        result.push(data.hasOwnProperty(y) ? data[y] : 0)
+    }
+    return result
 }
