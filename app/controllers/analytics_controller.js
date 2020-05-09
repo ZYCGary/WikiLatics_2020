@@ -22,7 +22,7 @@ const importData = async (req, res) => {
         await Promise.all([
             EditorService.importEditors('bots'),
             EditorService.importEditors('admin'),
-            EditorService.importRevisions()
+            RevisionService.importRevisions()
         ])
         res.status(200).json({message: 'All data imported! You are ready to analytic data ~^-^~'})
     } catch (err) {
@@ -31,110 +31,7 @@ const importData = async (req, res) => {
 
 }
 
-const getAuthorNames = async (req, res) => {
-    try {
-        const authorNames = await RevisionService.findAllAuthorNames()
-        res.status(200).json({names: authorNames})
-    } catch (err) {
-        res.status(500).json(err)
-    }
-}
-
-const analyseByAuthor = async (req, res) => {
-    try {
-        const user = req.body.author
-        const results = await RevisionService.findRevisionsByUser(user)
-        results.length === 0
-            ? res.status(500).json(new Error().message = {message: 'No Result Found.'})
-            : res.status(200).json(results)
-    } catch (err) {
-        res.status(500).json(err)
-    }
-}
-
-const getOverallTopArticles = async (req, res) => {
-    const filter = req.body.filter
-    try {
-        const [topRevisions, topUsers, topHistories] = await Promise.all([
-            RevisionService.findTopArticlesByRevisionCount(filter),
-            RevisionService.findTopArticlesByRegisteredUserCount(filter),
-            RevisionService.findTopArticlesByHistory(filter)
-        ])
-        res.status(200).json({
-            topRevisions: topRevisions,
-            topUsers: topUsers,
-            topHistories: topHistories
-        })
-    } catch (err) {
-        res.status(500).json({message: 'Failed to get analytics results because of server internal errors'})
-    }
-}
-
-const getArticlesInfo = async (req, res) => {
-    try {
-        const articlesInfo = await RevisionService.findArticlesWithTitleAndRevisionCount()
-        res.status(200).json({
-            articlesInfo: articlesInfo,
-        })
-    } catch (err) {
-        res.status(500).json({message: 'Failed to get analytics results because of server internal errors'})
-    }
-}
-
-const analyseArticle = async (req, res) => {
-    try {
-        const article = req.body.article
-        const latestTimestamp = await RevisionService.findLatestTimestamp(article)
-        const timeDiff = (new Date() - latestTimestamp) / (1000 * 3600 * 24)
-
-        // Update article revisions if it is out of date.
-        if (timeDiff > 1) {
-            // Update revisions via MediaWiki API.
-            const newRevisionCount = await RevisionService.updateRevisions(article, latestTimestamp.toISOString())
-            req.flash('success', `${newRevisionCount} new revisions downloaded.`)
-        } else {
-            req.flash('success', 'Your data is up to data, no new revision downloaded.')
-        }
-        // TODO: search & construct results
-        const [revisionCount, topRegularUsers, topNews] = await Promise.all([
-            RevisionService.getRevisionCountByArticle(article),
-            RevisionService.getTopRegularUsersByArticle(article),
-            RevisionService.getTopNewsByArticle(article)
-        ])
-        console.log(revisionCount, topRegularUsers, topNews)
-        const analyseResults = {
-            title: article,
-            revisionCount: revisionCount,
-            topRegularUsers: topRegularUsers,
-            topNews: topNews
-        }
-        res.status(200).json(analyseResults)
-    } catch (err) {
-        res.status(500).json({message: 'Failed to get author analytics results because of server internal errors'})
-    }
-}
-
-const getOverallChartsData = async (req, res) => {
-    try {
-        const [pieChartData] = await Promise.all([
-            RevisionService.getRevisionDistributionDataForPieChart()
-        ])
-        console.log(pieChartData)
-        res.status(200).json({
-            pie: pieChartData
-        })
-    } catch (err) {
-        res.status(500).json({message: 'Failed to get author analytics results because of server internal errors'})
-    }
-}
-
 module.exports = {
     index,
     importData,
-    getAuthorNames,
-    analyseByAuthor,
-    getOverallTopArticles,
-    getArticlesInfo,
-    analyseArticle,
-    getOverallChartsData
 }
