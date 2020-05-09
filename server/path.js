@@ -7,5 +7,6 @@ module.exports = (app, express) => {
         express.static('node_modules/jquery/dist'),
         express.static('node_modules/sweetalert2/dist'),
         express.static('node_modules/jquery-validation/dist'),
+        express.static('node_modules/chart.js/dist'),
     ])
 }

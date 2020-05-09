@@ -28,8 +28,7 @@ async function initAnalytics() {
         // All initialisation succeed, render results on the page
         (authorNames, topArticles, articleInfo) => {
             autoCompleteAuthorName(authorNames.names)
-            // renderTopArticles(2, topArticles)
-            console.log(articleInfo.articlesInfo)
+            renderTopArticles(2, topArticles)
             renderArticlesInfo(articleInfo.articlesInfo)
             Swal.close()
         },
