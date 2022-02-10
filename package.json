@@ -47,6 +47,6 @@
     "@types/pug": "^2.0.4",
     "@types/serve-favicon": "^2.5.0",
     "dotenv": "^8.2.0",
-    "node-sass": "^4.14.1"
+    "node-sass": "^7.0.0"
   }
 }
